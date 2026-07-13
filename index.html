@@ -313,18 +313,32 @@
   .hero::before{
     content:"";
     position:absolute; inset:0;
-    background-color: var(--cream);   /* was a sky-to-cream gradient — that was the 2007 tell */
+    background-color: var(--cream);
+    z-index:-3;
+  }
+  /* Light falling on the page — NOT a sky fade.
+     The distinction is that it's SHORT and it lives at the TOP. It resolves
+     before the eye can read it as a gradient, so it lands as light on paper
+     rather than as a horizon. Keep the height low; if this ever grows past
+     about 220px it starts to look like 2007 again. */
+  .hero::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; top:0;
+    height: clamp(140px, 22vw, 220px);
+    background: linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,0) 100%);
     z-index:-2;
+    pointer-events:none;
   }
   .cove-art{
     position:absolute;
     left:0; right:0; bottom:0;
-    width:100%; height: 40%;
-    min-height: 190px;
+    width:100%;
+    height: clamp(130px, 16vw, 230px);
     z-index:-1;
     display:block;
   }
-  .hero-body{ padding-top: 2rem; padding-bottom: 12rem; max-width: 40rem; }
+  .hero-body{ padding-top: 2rem; padding-bottom: clamp(9rem, 18vw, 14rem); max-width: 40rem; }
   .hero-body p.lede{
     font-size: 1.2rem;
     max-width: 34ch;
@@ -745,22 +759,16 @@
     <a class="skip" href="#main">Skip to main content</a>
 
     <header class="hero">
-      <svg class="cove-art" viewBox="0 0 1440 320"
-        preserveAspectRatio="xMidYMax slice" aria-hidden="true"
-        focusable="false">
-        <!-- far bluff -->
+      <svg class="cove-art" viewBox="0 0 1440 200" preserveAspectRatio="none"
+        aria-hidden="true" focusable="false">
         <path
-          d="M0,196 C120,168 210,150 330,158 C420,164 470,142 560,150 L560,320 L0,320 Z"
-          fill="#EDE3D2" />
-        <!-- water, three layers, lightest to deepest -->
-        <path
-          d="M0,214 C210,182 380,232 620,214 C860,196 1060,158 1260,180 C1330,188 1390,200 1440,196 L1440,320 L0,320 Z"
+          d="M0,58 C240,26 520,86 800,58 C1010,37 1240,54 1440,42 L1440,200 L0,200 Z"
           fill="#D6EAF3" />
         <path
-          d="M0,246 C230,220 400,266 660,248 C900,232 1100,204 1440,236 L1440,320 L0,320 Z"
+          d="M0,104 C260,76 540,132 820,106 C1040,86 1250,102 1440,90 L1440,200 L0,200 Z"
           fill="#A9D2E4" />
         <path
-          d="M0,282 C260,262 430,296 700,282 C960,268 1180,252 1440,276 L1440,320 L0,320 Z"
+          d="M0,156 C280,132 560,180 840,158 C1060,141 1260,152 1440,144 L1440,200 L0,200 Z"
           fill="#1E4C62" />
       </svg>
 
