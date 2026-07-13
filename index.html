@@ -125,7 +125,6 @@
   :root{
     color-scheme: light;              /* stops iOS/Chrome auto dark-mode from inverting the page */
 
-    --ground:     #DACAAF;   /* the warm ground the sheet lifts off */
     --cream:      #FAF6EF;
     --sand:       #EDE3D2;
     --sky:        #A9D2E4;   /* DECORATION ONLY — fills, rules, icons. Never body text on dark. */
@@ -133,9 +132,16 @@
     --cove:       #1E4C62;
     --cove-deep:  #143646;
     --ink:        #14303D;
-    --sun:        #EFC050;   /* THE accent. 7.5:1 with --cove-deep — AAA. */
-    --sun-deep:   #6E4A12;   /* the sun, dark enough to be TEXT — 7.9:1 on white */
-    --sun-lift:   #F6CE78;   /* hover */
+    /* THE RULE, from the research on aging eyes:
+       the lens yellows, so HUE degrades but LUMINANCE survives. Warm hues survive
+       best of all. So: warm AND dark on light surfaces; warm AND light on dark ones.
+       Never a light warm colour on a light ground — that's the yellow/white pair the
+       literature names as one of the worst for older adults. */
+    --rust:       #9C3E26;   /* buttons on cream. white label 6.7:1, and 6.2:1 against the page */
+    --rust-deep:  #8F3821;   /* rust dark enough to be TEXT on cream — 7.1:1, AAA */
+    --rust-lift:  #832F1C;   /* hover — goes darker, not lighter */
+
+    --sun:        #EFC050;   /* the sun. ONLY on the dark band: 7.5:1 on cove-deep. */
     --gold:       #D9A64E;   /* focus rings on dark surfaces */
 
     /* Text colors for use ON dark surfaces. All verified AAA (7:1+). */
@@ -153,7 +159,7 @@
 
   *,*::before,*::after{ box-sizing:border-box; }
 
-  html{ background-color: var(--ground); }
+  html{ background-color: var(--cream); }
 
   /* A fixed cream layer covering the whole viewport, behind all content.
      Belt and braces against any container that decides to go dark. */
@@ -161,30 +167,20 @@
     content:"";
     position:fixed;
     inset:0;
-    background-color: var(--ground);
+    background-color: var(--cream);
     z-index:-1;
   }
 
   body{
     margin:0;
     position:relative;
-    padding: clamp(.75rem, 2vw, 1.5rem);
-    background-color: var(--ground);
+    overflow-wrap: break-word;
+    background-color: var(--cream);
     color: var(--ink);
     font-family: var(--font-body);
     font-size: 1rem;
     line-height: 1.75;
     -webkit-font-smoothing: antialiased;
-  }
-
-  /* ---- LAYOUT D: the page is a sheet, lifted off the ground.
-         Depth comes from an edge and a shadow, not from a fade. ---- */
-  .sheet{
-    background-color: var(--cream);
-    border-radius: clamp(14px, 2vw, 24px);
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(20,48,64,.05),
-                0 28px 56px -24px rgba(20,48,64,.38);
   }
 
   h1,h2,h3{
@@ -224,10 +220,17 @@
   .skip:focus{ left: 1rem; top: 1rem; }
 
   .wrap{
-    width: min(68rem, 100% - 2.5rem);
+    width: 100%;
+    max-width: 68rem;
+    padding-inline: clamp(1rem, 4vw, 1.5rem);
     margin-inline: auto;
   }
-  .narrow{ width: min(46rem, 100% - 2.5rem); margin-inline:auto; }
+  .narrow{
+    width: 100%;
+    max-width: 46rem;
+    padding-inline: clamp(1rem, 4vw, 1.5rem);
+    margin-inline: auto;
+  }
 
   .eyebrow{
     font-size: .75rem;
@@ -249,24 +252,27 @@
     font-weight: 700;
     text-decoration: none;
     border-radius: 999px;
-    /* The sun. Deep navy on #EFC050 measures 7.5:1 — AAA. */
-    border: 3px solid var(--sun);
-    background-color: var(--sun);
-    color: var(--cove-deep);
+    /* Warm and DARK. The button has to be findable as an OBJECT, not just legible
+       once you've found it. Rust is 6.2:1 against the cream page; the yellow was 1.6:1. */
+    border: 3px solid var(--rust);
+    background-color: var(--rust);
+    color: #fff;
     cursor:pointer;
     transition: transform .15s ease, background-color .15s ease;
   }
-  .btn:hover{ background-color: var(--sun-lift); border-color: var(--sun-lift); color: var(--cove-deep); transform: translateY(-2px); }
+  .btn:hover{ background-color: var(--rust-lift); border-color: var(--rust-lift); color:#fff; transform: translateY(-2px); }
   .btn--ghost{ background-color: transparent; border-color: var(--sand); color: var(--cove); }
   .btn--ghost:hover{ background-color: var(--sand); border-color: var(--sand); color: var(--cove-deep); }
 
   /* ---------- Header ---------- */
   .masthead{
-    position:relative; z-index:3;
-    display:flex; flex-wrap:wrap; gap:1rem;
+    position:relative;
+    display:flex; flex-wrap:wrap; gap:1rem 1.5rem;
     align-items:center; justify-content:space-between;
     padding-block: 1.4rem;
   }
+  .logo{ flex: 1 1 auto; min-width: 0; }
+  .phone-block{ flex: 0 1 auto; min-width: 0; }
   .logo{
     display:flex; align-items:center; gap:.7rem;
     font-family: var(--font-body);     /* the wordmark is set in the same face as the body */
@@ -332,6 +338,17 @@
     z-index:-3;
   }
 
+  /* LAYOUT C — depth from an EDGE, not a fade.
+     A white band across the top, with a crisp boundary. It also finally gives
+     the nav somewhere to sit; before this it was floating in space. */
+  .topbar{
+    position: relative;
+    z-index: 3;
+    background-color: #fff;
+    border-bottom: 2px solid var(--sand);
+    box-shadow: 0 1px 0 rgba(255,255,255,.9);
+  }
+
   .cove-art{
     position:absolute;
     left:0; right:0; bottom:0;
@@ -340,16 +357,18 @@
     z-index:-1;
     display:block;
   }
-  .hero-body{ padding-top: 2rem; padding-bottom: clamp(9rem, 18vw, 14rem); max-width: 40rem; }
+  .hero-body{ padding-top: 3rem; padding-bottom: clamp(9rem, 18vw, 14rem); max-width: 40rem; }
   .hero-body p.lede{
     font-size: 1.2rem;
     max-width: 34ch;
   }
   .hero-actions{ display:flex; flex-wrap:wrap; gap: .9rem; margin-top: 1.6rem; }
+  .hero-actions .btn{ flex: 1 1 auto; min-width: 0; }
 
   /* ---------- Signature: the size control ---------- */
   .sizer{
     margin-top: 2.6rem;
+    width: 100%;
     padding: 1.1rem 1.3rem;
     background-color: #fff;
     border: 2px solid var(--sky);
@@ -440,7 +459,7 @@
 
   .cards{
     display:grid; gap: 1.4rem; margin-top: 2.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
   }
   .card{
     background: var(--cream);
@@ -455,6 +474,7 @@
   /* Steps — a real sequence, so numbers earn their place */
   .steps{ list-style:none; counter-reset: step; padding:0; margin: 2.5rem 0 0; display:grid; gap: 2rem; }
   .steps li{ display:flex; gap: 1.3rem; align-items:flex-start; }
+  .steps li > div{ min-width: 0; }
   .steps li::before{
     counter-increment: step;
     content: counter(step);
@@ -482,13 +502,13 @@
   }
 
   /* Pricing */
-  .price-grid{ display:grid; gap:1.4rem; margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(15rem,1fr)); }
+  .price-grid{ display:grid; gap:1.4rem; margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
   .price{
     background-color:#fff; border:2px solid var(--sand);
     border-radius:14px; padding:1.7rem;
   }
-  .price--free{ border:3px solid var(--sun); }
-  .price--free .unit{ color: var(--sun-deep); }
+  .price--free{ border:3px solid var(--rust); }
+  .price--free .unit{ color: var(--rust-deep); }
   .price .amount{
     font-family: var(--font-display);
     font-size: 2.2rem; font-weight:700; color: var(--cove-deep);
@@ -512,7 +532,7 @@
   /* Who we are */
   .people{
     display:grid; gap: 2rem; margin-top: 2.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
   }
   .person{
     background-color: var(--cream);
@@ -555,7 +575,7 @@
   .who-note strong{ color: var(--cove-deep); }
 
   /* Testimonials */
-  .quotes{ display:grid; gap:1.4rem; margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(18rem,1fr)); }
+  .quotes{ display:grid; gap:1.4rem; margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
   blockquote{
     margin:0;
     background: var(--cream);
@@ -673,7 +693,7 @@
     border-color: var(--cove-deep);
   }
 
-  .field-row{ display:grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(15rem,1fr)); }
+  .field-row{ display:grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
   .field-row .field{ margin-bottom:0; }
   .form .field-row{ margin-bottom: 1.6rem; }
 
@@ -709,6 +729,7 @@
     line-height: 1.55;
   }
 
+  /* On the DARK card the polarity flips: warm and LIGHT. Navy on sun = 7.5:1. */
   .btn--send{
     background-color: var(--sun);
     border-color: var(--sun);
@@ -717,29 +738,58 @@
     max-width: 22rem;
     margin-top:.4rem;
   }
-  .contact-card .btn--send:hover{ background-color: var(--sun-lift); border-color: var(--sun-lift); color: var(--cove-deep); }
+  .contact-card .btn--send:hover{ background-color:#fff; border-color:#fff; color: var(--cove-deep); }
 
   .form-note{ margin: 1.1rem 0 0; font-size:.9rem; color: var(--sky); max-width: 48ch; }
 
-  /* The footer lives OFF the sheet, on the ground. This is what sells the depth —
-     you can see the page end and the surface behind it continue. */
-  footer{
-    padding-block: 2.5rem;
-    background-color: transparent;
-    color: var(--cove-deep);
-    border-top: 0;
-    margin-top: 0;
-    font-size: .92rem;
+  /* The phone number, pinned to the bottom of the screen on phones.
+     Rust, because it has to be the most findable object on the page. */
+  .callbar{ display:none; }
+
+  @media (max-width: 46em){
+    /* In the header it wrapped to two ugly lines and pushed the headline down.
+       So on a phone it leaves the header entirely and lives down here instead. */
+    .phone-block{ display:none; }
+
+    .callbar{
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .7rem;
+      min-height: 4rem;
+      padding: 1rem 1.2rem calc(1rem + env(safe-area-inset-bottom, 0px));
+      background-color: var(--rust);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 -6px 20px -8px rgba(20,48,64,.4);
+    }
+    .callbar:hover, .callbar:active{ background-color: var(--rust-lift); color:#fff; }
+    .callbar svg{ width: 1.5rem; height: 1.5rem; fill: currentColor; flex: 0 0 auto; }
+
+    /* keep the bar from sitting on top of the footer */
+    body{ padding-bottom: 6rem; }
   }
-  footer strong{ color: var(--cove-deep); }
+
+  footer{
+    padding-block: 3rem;
+    background-color: var(--cream);
+    color: var(--ink);
+    border-top: 2px solid var(--sand);
+    margin-top: 4.5rem;
+    font-size: .95rem;
+  }
   footer p{ max-width:none; }
   .foot-areas{ color: var(--cove-deep); }
 
   /* This page is light by design. If the device is in dark mode, hold the line. */
   @media (prefers-color-scheme: dark){
-    html, body{ background-color: var(--ground); color: var(--ink); }
-    .sheet, .band, .hero{ background-color: var(--cream); color: var(--ink); }
-    footer{ background-color: transparent; color: var(--cove); }
+    html, body, .band, .hero, footer{ background-color: var(--cream); color: var(--ink); }
     .band--sand{ background-color: var(--sand); }
     .band--cove{ background-color: var(--cove); color: var(--on-dark); }
     .contact-card{ background-color: var(--cove-deep); color: var(--on-dark); }
@@ -764,22 +814,21 @@
   <body>
     <a class="skip" href="#main">Skip to main content</a>
 
-    <div class="sheet">
+    <header class="hero">
+      <svg class="cove-art" viewBox="0 0 1440 200" preserveAspectRatio="none"
+        aria-hidden="true" focusable="false">
+        <path
+          d="M0,58 C240,26 520,86 800,58 C1010,37 1240,54 1440,42 L1440,200 L0,200 Z"
+          fill="#D6EAF3" />
+        <path
+          d="M0,104 C260,76 540,132 820,106 C1040,86 1250,102 1440,90 L1440,200 L0,200 Z"
+          fill="#A9D2E4" />
+        <path
+          d="M0,156 C280,132 560,180 840,158 C1060,141 1260,152 1440,144 L1440,200 L0,200 Z"
+          fill="#1E4C62" />
+      </svg>
 
-      <header class="hero">
-        <svg class="cove-art" viewBox="0 0 1440 200" preserveAspectRatio="none"
-          aria-hidden="true" focusable="false">
-          <path
-            d="M0,58 C240,26 520,86 800,58 C1010,37 1240,54 1440,42 L1440,200 L0,200 Z"
-            fill="#D6EAF3" />
-          <path
-            d="M0,104 C260,76 540,132 820,106 C1040,86 1250,102 1440,90 L1440,200 L0,200 Z"
-            fill="#A9D2E4" />
-          <path
-            d="M0,156 C280,132 560,180 840,158 C1060,141 1260,152 1440,144 L1440,200 L0,200 Z"
-            fill="#1E4C62" />
-        </svg>
-
+      <div class="topbar">
         <div class="wrap">
           <nav class="masthead" aria-label="Primary">
             <a class="logo" href="#main">
@@ -801,540 +850,529 @@
               <p class="phone-promise">Every call returned the same evening.</p>
             </div>
           </nav>
+        </div>
+      </div>
 
-          <div class="hero-body">
-            <p class="eyebrow">In-home tech help · La Jolla &amp; San Diego</p>
-            <h1>Nobody here is going to make you feel foolish.</h1>
-            <p class="lede">Patient, in-home help with your phone, tablet,
-              computer, email and photos. We sit down beside you and we go at
-              your speed.</p>
+      <div class="wrap">
+        <div class="hero-body">
+          <p class="eyebrow">In-home tech help · La Jolla &amp; San Diego</p>
+          <h1>Nobody here is going to make you feel foolish.</h1>
+          <p class="lede">Patient, in-home help with your phone, tablet,
+            computer, email and photos. We sit down beside you and we go at your
+            speed.</p>
 
-            <div class="hero-actions">
-              <a class="btn" href="#contact">Book a visit</a>
-              <a class="btn btn--ghost" href="#help">See what we help with</a>
+          <div class="hero-actions">
+            <a class="btn" href="#contact">Book a visit</a>
+            <a class="btn btn--ghost" href="#help">See what we help with</a>
+          </div>
+          <p class="reassure">Call any time. If we don't pick up, leave a
+            message — <strong>we return every call the same
+              evening.</strong></p>
+
+          <div class="sizer">
+            <p class="sizer-label" id="sizer-label">Text too small? Make this
+              page bigger:</p>
+            <div role="group" aria-labelledby="sizer-label">
+              <button type="button" class="sizer-btn s1" data-size="normal"
+                aria-pressed="true">A</button>
+              <button type="button" class="sizer-btn s2" data-size="larger"
+                aria-pressed="false">A</button>
+              <button type="button" class="sizer-btn s3" data-size="largest"
+                aria-pressed="false">A</button>
             </div>
-            <p class="reassure">Call any time. If we don't pick up, leave a
-              message — <strong>we return every call the same
-                evening.</strong></p>
+          </div>
+          <p class="visually-hidden" aria-live="polite" id="sizer-status"
+            style="position:absolute;left:-9999px;"></p>
+        </div>
+      </div>
+    </header>
 
-            <div class="sizer">
-              <p class="sizer-label" id="sizer-label">Text too small? Make this
-                page bigger:</p>
-              <div role="group" aria-labelledby="sizer-label">
-                <button type="button" class="sizer-btn s1" data-size="normal"
-                  aria-pressed="true">A</button>
-                <button type="button" class="sizer-btn s2" data-size="larger"
-                  aria-pressed="false">A</button>
-                <button type="button" class="sizer-btn s3" data-size="largest"
-                  aria-pressed="false">A</button>
-              </div>
-            </div>
-            <p class="visually-hidden" aria-live="polite" id="sizer-status"
-              style="position:absolute;left:-9999px;"></p>
+    <main id="main">
+
+      <!-- SYMPTOMS -->
+      <section class="band" aria-labelledby="symptoms-h">
+        <div class="narrow">
+          <p class="eyebrow">Sound familiar?</p>
+          <h2 id="symptoms-h">If you've said any of these out loud, you're in
+            the right place.</h2>
+          <ul class="symptoms">
+            <li>“My phone rings and I can't hear it. I don't know what I
+              pressed.”</li>
+            <li>“It says the storage is full and I don't know what that
+              means.”</li>
+            <li>“I got a text saying my account was suspended. Is that
+              real?”</li>
+            <li>“My daughter set it up and now I'm afraid to touch
+              anything.”</li>
+            <li>“I have five hundred photos and I can't find the one I
+              want.”</li>
+            <li>“The doctor's office wants me to use a portal. I don't have a
+              portal.”</li>
+            <li>“I asked my grandson and he fixed it in four seconds without
+              telling me how.”</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section class="band band--sand" id="help" aria-labelledby="help-h">
+        <div class="wrap">
+          <p class="eyebrow">What we help with</p>
+          <h2 id="help-h">Whatever's on the table, we'll look at it.</h2>
+          <p class="lead-in">There is no such thing as a question too small. If
+            it's bothering you, it's worth a visit.</p>
+
+          <div class="cards">
+            <article class="card">
+              <h3>Your phone &amp; tablet</h3>
+              <ul>
+                <li>Making the text bigger and the ringer louder</li>
+                <li>Why your phone went silent (it's usually one setting)</li>
+                <li>Voicemail that actually works</li>
+                <li>Silencing the spam callers</li>
+                <li>FaceTime with the grandchildren, start to finish</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <h3>Photos</h3>
+              <ul>
+                <li>Finding the picture you're thinking of</li>
+                <li>Sending photos to your family</li>
+                <li>Clearing out what you don't need</li>
+                <li>Making an album worth keeping</li>
+                <li>Printing a photo the way you remember printing photos</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <h3>Email &amp; messages</h3>
+              <ul>
+                <li>Getting into an account you're locked out of</li>
+                <li>Taming an inbox with 12,000 unread</li>
+                <li>Group texts — how to leave one, how to not reply to
+                  everyone</li>
+                <li>Voice-to-text, if the keys are too small</li>
+                <li>Setting up mail on a new device</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <h3>Computers &amp; printing</h3>
+              <ul>
+                <li>Printers that won't print</li>
+                <li>Word documents, letters, labels</li>
+                <li>Opening the PDF the doctor sent</li>
+                <li>Wi-Fi that keeps dropping</li>
+                <li>A new computer, set up properly, from the start</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <h3>Staying safe online</h3>
+              <ul>
+                <li>Telling a real message from a fake one</li>
+                <li>The grandparent scam, and how to hang up on it</li>
+                <li>Passwords you can actually keep track of</li>
+                <li>What to do if you already clicked</li>
+                <li>Shopping and banking without the worry</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <h3>Everything else</h3>
+              <ul>
+                <li>Streaming: Netflix, YouTube, the remote with 40 buttons</li>
+                <li>Zoom for a doctor's appointment</li>
+                <li>The patient portal, explained once, clearly</li>
+                <li>Smart speakers and reminders</li>
+                <li>Backing things up so they're not lost</li>
+              </ul>
+            </article>
           </div>
         </div>
-      </header>
+      </section>
 
-      <main id="main">
+      <!-- HOW IT WORKS -->
+      <section class="band" aria-labelledby="how-h">
+        <div class="narrow">
+          <p class="eyebrow">How it works</p>
+          <h2 id="how-h">Three steps, and none of them are complicated.</h2>
+          <ol class="steps">
+            <li>
+              <div>
+                <h3>You call or write to us</h3>
+                <p>Tell us what's going on, in whatever words you have for it.
+                  “The thing won't work” is a perfectly good description. We'll
+                  figure out the rest together.</p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h3>We come to you</h3>
+                <p>Your table, your Wi-Fi, your device. That's where the problem
+                  actually lives, and it's where it gets solved. Most visits
+                  take about an hour.</p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h3>You leave knowing how</h3>
+                <p>We don't fix it over your shoulder and disappear. You do it
+                  yourself while we're sitting there, and we leave you a written
+                  note — in large print — of exactly what we did.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
 
-        <!-- SYMPTOMS -->
-        <section class="band" aria-labelledby="symptoms-h">
-          <div class="narrow">
-            <p class="eyebrow">Sound familiar?</p>
-            <h2 id="symptoms-h">If you've said any of these out loud, you're in
-              the right place.</h2>
-            <ul class="symptoms">
-              <li>“My phone rings and I can't hear it. I don't know what I
-                pressed.”</li>
-              <li>“It says the storage is full and I don't know what that
-                means.”</li>
-              <li>“I got a text saying my account was suspended. Is that
-                real?”</li>
-              <li>“My daughter set it up and now I'm afraid to touch
-                anything.”</li>
-              <li>“I have five hundred photos and I can't find the one I
-                want.”</li>
-              <li>“The doctor's office wants me to use a portal. I don't have a
-                portal.”</li>
-              <li>“I asked my grandson and he fixed it in four seconds without
-                telling me how.”</li>
-            </ul>
+      <!-- TRUST -->
+      <section class="band band--cove" aria-labelledby="trust-h">
+        <div class="narrow">
+          <p class="eyebrow">Our promises</p>
+          <h2 id="trust-h">You should be careful about who you let near your
+            devices. So let's be plain.</h2>
+          <p>A lot of people who target older adults look friendly and helpful.
+            We know that, and we'd rather say the quiet part out loud than have
+            you wonder.</p>
+
+          <ul class="promises">
+            <li>
+              <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false"><path
+                  d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
+              <span>We will never ask you to pay with a gift card, a wire
+                transfer, or an app. Nobody legitimate ever will.</span>
+            </li>
+            <li>
+              <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false"><path
+                  d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
+              <span>We will never call you out of the blue and tell you
+                something is wrong with your computer.</span>
+            </li>
+            <li>
+              <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false"><path
+                  d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
+              <span>You type your own passwords. We don't write them down, and
+                we don't keep them.</span>
+            </li>
+            <li>
+              <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false"><path
+                  d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
+              <span>You'll know the price before we start. If we can't help you,
+                you don't pay.</span>
+            </li>
+            <li>
+              <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false"><path
+                  d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
+              <span>You're welcome to have a family member on speakerphone for
+                the whole visit. We like it when you do.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PRICING -->
+      <section class="band" aria-labelledby="price-h">
+        <div class="wrap">
+          <p class="eyebrow">What it costs</p>
+          <h2 id="price-h">No packages, no contracts, no surprises.</h2>
+          <p class="lead-in">One rate, told to you on the phone before we ever
+            knock on the door.</p>
+
+          <div class="price-grid">
+            <article class="price">
+              <span class="amount">$100</span>
+              <span class="unit">The first hour</span>
+              <p>We sort out what's urgent, fix what we can, and leave you a
+                written note — in large print — of what we did.</p>
+            </article>
+            <article class="price">
+              <span class="amount">$50</span>
+              <span class="unit">Each half hour after</span>
+              <p>Only if you want to keep going. Most visits are done in an
+                hour. No travel charge anywhere in La Jolla.</p>
+            </article>
+            <article class="price price--free">
+              <span class="amount">Free</span>
+              <span class="unit">Tech Help Hour</span>
+              <p>Our monthly drop-in workshop at local retirement communities.
+                Bring your device and a question. No charge, ever.</p>
+            </article>
           </div>
-        </section>
 
-        <!-- SERVICES -->
-        <section class="band band--sand" id="help" aria-labelledby="help-h">
-          <div class="wrap">
-            <p class="eyebrow">What we help with</p>
-            <h2 id="help-h">Whatever's on the table, we'll look at it.</h2>
-            <p class="lead-in">There is no such thing as a question too small.
-              If it's bothering you, it's worth a visit.</p>
+          <p class="price-note">You'll know the price before we knock on the
+            door. <strong>If we can't help you, you don't pay.</strong> We take
+            checks, or Venmo and Zelle if that's easier for your family.</p>
+        </div>
+      </section>
 
-            <div class="cards">
-              <article class="card">
-                <h3>Your phone &amp; tablet</h3>
-                <ul>
-                  <li>Making the text bigger and the ringer louder</li>
-                  <li>Why your phone went silent (it's usually one setting)</li>
-                  <li>Voicemail that actually works</li>
-                  <li>Silencing the spam callers</li>
-                  <li>FaceTime with the grandchildren, start to finish</li>
-                </ul>
-              </article>
+      <!-- COMMUNITY -->
+      <section class="band band--sand" aria-labelledby="community-h">
+        <div class="narrow">
+          <p class="eyebrow">For activities &amp; life enrichment directors</p>
+          <h2 id="community-h">We'll run a free Tech Help Hour at your
+            community.</h2>
+          <p>One hour, once a month. Ten minutes of a single useful topic taught
+            to the room — how to spot a scam text, how to make everything
+            bigger, how to find a photo — and then open troubleshooting for
+            whoever brings a device.</p>
+          <p>Residents leave with a large-print handout. You get a program that
+            fills the room and doesn't cost you anything. We've worked inside a
+            senior community, so we know the difference between a good activity
+            and one that empties out after ten minutes.</p>
+          <p><a href="#contact">Get in touch about scheduling one</a> — we're
+            currently booking in the La Jolla area.</p>
+        </div>
+      </section>
 
-              <article class="card">
-                <h3>Photos</h3>
-                <ul>
-                  <li>Finding the picture you're thinking of</li>
-                  <li>Sending photos to your family</li>
-                  <li>Clearing out what you don't need</li>
-                  <li>Making an album worth keeping</li>
-                  <li>Printing a photo the way you remember printing photos</li>
-                </ul>
-              </article>
+      <!-- WHO WE ARE -->
+      <section class="band" id="who" aria-labelledby="who-h">
+        <div class="wrap">
+          <p class="eyebrow">Who we are</p>
+          <h2 id="who-h">You should know who's coming to your door.</h2>
+          <p class="lead-in">It's the two of us. Not a call centre, not a
+            rotating cast of contractors. When you book a visit, you'll be told
+            on the phone exactly who is coming — so we'll introduce ourselves
+            properly.</p>
 
-              <article class="card">
-                <h3>Email &amp; messages</h3>
-                <ul>
-                  <li>Getting into an account you're locked out of</li>
-                  <li>Taming an inbox with 12,000 unread</li>
-                  <li>Group texts — how to leave one, how to not reply to
-                    everyone</li>
-                  <li>Voice-to-text, if the keys are too small</li>
-                  <li>Setting up mail on a new device</li>
-                </ul>
-              </article>
+          <div class="people">
+            <article class="person">
+              <div class="portrait" role="img" aria-label="Photograph of Lana">
+                <span>Your photo here</span>
+              </div>
+              <div class="person-body">
+                <h3>Lana</h3>
+                <p class="role">I answer the phone. I come out for most
+                  visits.</p>
+                <p>I taught myself to write software, and then spent twenty-five
+                  years doing it — building the online stores for Ralph Lauren,
+                  Restoration Hardware and Quiksilver, among others. Most of
+                  that job was making complicated things make sense to the
+                  people who had to use them.</p>
+                <p>I learned it all the hard way, with nobody to ask. So I know
+                  exactly what it feels like not to know — and I have never once
+                  thought a question was stupid.</p>
+                <p>I work inside a La Jolla senior community now. I'm the one
+                  who picks up when you call, and I'm the one who calls you
+                  back.</p>
+              </div>
+            </article>
 
-              <article class="card">
-                <h3>Computers &amp; printing</h3>
-                <ul>
-                  <li>Printers that won't print</li>
-                  <li>Word documents, letters, labels</li>
-                  <li>Opening the PDF the doctor sent</li>
-                  <li>Wi-Fi that keeps dropping</li>
-                  <li>A new computer, set up properly, from the start</li>
-                </ul>
-              </article>
+            <article class="person">
+              <div class="portrait" role="img"
+                aria-label="Photograph of Taylor">
+                <span>Taylor's photo here</span>
+              </div>
+              <div class="person-body">
+                <h3>Taylor</h3>
+                <p class="role">I come out for the harder visits.</p>
+              </div>
+            </article>
+          </div>
 
-              <article class="card">
-                <h3>Staying safe online</h3>
-                <ul>
-                  <li>Telling a real message from a fake one</li>
-                  <li>The grandparent scam, and how to hang up on it</li>
-                  <li>Passwords you can actually keep track of</li>
-                  <li>What to do if you already clicked</li>
-                  <li>Shopping and banking without the worry</li>
-                </ul>
-              </article>
+          <p class="who-note">You'll always be told who's coming before they
+            arrive. If anyone ever turns up at your door claiming to be from
+            Tech Together and you weren't expecting them, <strong>don't let them
+              in — call us.</strong></p>
+        </div>
+      </section>
 
-              <article class="card">
-                <h3>Everything else</h3>
-                <ul>
-                  <li>Streaming: Netflix, YouTube, the remote with 40
-                    buttons</li>
-                  <li>Zoom for a doctor's appointment</li>
-                  <li>The patient portal, explained once, clearly</li>
-                  <li>Smart speakers and reminders</li>
-                  <li>Backing things up so they're not lost</li>
-                </ul>
-              </article>
+      <!-- TESTIMONIALS -->
+      <section class="band" aria-labelledby="quotes-h">
+        <div class="wrap">
+          <p class="eyebrow">What people say</p>
+          <h2 id="quotes-h">In their words</h2>
+          <p class="lead-in">We'd rather show you three real ones than thirty
+            invented ones.</p>
+
+          <div class="quotes">
+            <blockquote>
+              <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false"><path
+                  d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z" /></svg>
+              <p>[Real quote from your first client goes here. Ask them one
+                question: “What was it like before, and what's it like now?”
+                Their answer will be better than anything you could write.]</p>
+              <cite>First name, Last initial. · La Jolla</cite>
+            </blockquote>
+
+            <blockquote>
+              <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false"><path
+                  d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z" /></svg>
+              <p>[Try to get one from an adult child who lives out of state —
+                they're often the one searching, and their worry is different
+                from their parent's.]</p>
+              <cite>First name, Last initial. · Daughter of a client</cite>
+            </blockquote>
+
+            <blockquote>
+              <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false"><path
+                  d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z" /></svg>
+              <p>[And one from an activities director, once you've run a Tech
+                Help Hour. That one unlocks every other building in town.]</p>
+              <cite>Name · Activities Director</cite>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="band band--sand" aria-labelledby="faq-h">
+        <div class="narrow">
+          <p class="eyebrow">Questions</p>
+          <h2 id="faq-h">Things people ask before they call</h2>
+
+          <div class="faq">
+            <details>
+              <summary>Do you come to my home?</summary>
+              <p>Yes. Your house, your apartment, or your unit in a retirement
+                community. We work on your device, at your table, on your Wi-Fi
+                — because that's where the problem actually lives.</p>
+            </details>
+            <details>
+              <summary>What if my question is very basic?</summary>
+              <p>Good. Those are our favorite ones, and they're the ones people
+                are most embarrassed to ask. There's nothing here too small, and
+                we will never make you feel foolish for asking.</p>
+            </details>
+            <details>
+              <summary>Will you need my passwords?</summary>
+              <p>Sometimes, to fix an email account or an Apple ID. You type
+                them — not us. We don't write them down and we don't keep them.
+                If you'd feel better changing a password afterward, we'll help
+                you do that too.</p>
+            </details>
+            <details>
+              <summary>How much does it cost?</summary>
+              <p>$100 for the first hour, then $50 for each additional half hour
+                if you want to keep going. Most visits are done in an hour. No
+                travel fee anywhere in La Jolla, and if we can't help you, you
+                don't pay.</p>
+            </details>
+            <details>
+              <summary>Can you help my parent while I live out of
+                state?</summary>
+              <p>Yes, and it's a lot of what we do. We can arrange everything
+                with you, work with your parent in person, and send you a short
+                plain-English note afterward about what we did and what to watch
+                for.</p>
+            </details>
+            <details>
+              <summary>What if you don't answer when I call?</summary>
+              <p>Leave a message. We return every call the same evening — that's
+                a promise, not a hope. If we don't pick up during the day it's
+                because we're sitting at someone's kitchen table, which is
+                exactly what we'd be doing for you.</p>
+            </details>
+            <details>
+              <summary>What areas do you serve?</summary>
+              <p>La Jolla and the surrounding neighborhoods — Bird Rock, Pacific
+                Beach, University City, and Del Mar. If you're a little further
+                out, call and ask.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="band" id="contact" aria-labelledby="contact-h">
+        <div class="wrap">
+          <div class="contact-card">
+            <p class="eyebrow">Get in touch</p>
+            <h2 id="contact-h">Let's get it sorted out.</h2>
+            <p class="contact-lede">The easiest thing is to call. We won't
+              always pick up — we're usually sitting at someone's kitchen table
+              — but <strong>we return every call the same evening.</strong> If
+              you'd rather write, fill this in instead.</p>
+
+            <div class="contact-actions">
+              <a class="btn" href="tel:+18580000000">Call (858) 000-0000</a>
+              <a class="btn btn--outline" href="/start.html">Not sure what's
+                wrong? Start here</a>
             </div>
-          </div>
-        </section>
 
-        <!-- HOW IT WORKS -->
-        <section class="band" aria-labelledby="how-h">
-          <div class="narrow">
-            <p class="eyebrow">How it works</p>
-            <h2 id="how-h">Three steps, and none of them are complicated.</h2>
-            <ol class="steps">
-              <li>
-                <div>
-                  <h3>You call or write to us</h3>
-                  <p>Tell us what's going on, in whatever words you have for it.
-                    “The thing won't work” is a perfectly good description.
-                    We'll figure out the rest together.</p>
-                </div>
-              </li>
-              <li>
-                <div>
-                  <h3>We come to you</h3>
-                  <p>Your table, your Wi-Fi, your device. That's where the
-                    problem actually lives, and it's where it gets solved. Most
-                    visits take about an hour.</p>
-                </div>
-              </li>
-              <li>
-                <div>
-                  <h3>You leave knowing how</h3>
-                  <p>We don't fix it over your shoulder and disappear. You do it
-                    yourself while we're sitting there, and we leave you a
-                    written note — in large print — of exactly what we did.</p>
-                </div>
-              </li>
-            </ol>
-          </div>
-        </section>
+            <p class="contact-hint">That last one asks three simple questions —
+              no typing until the end — and tells you what's probably going on
+              before you ever speak to us.</p>
 
-        <!-- TRUST -->
-        <section class="band band--cove" aria-labelledby="trust-h">
-          <div class="narrow">
-            <p class="eyebrow">Our promises</p>
-            <h2 id="trust-h">You should be careful about who you let near your
-              devices. So let's be plain.</h2>
-            <p>A lot of people who target older adults look friendly and
-              helpful. We know that, and we'd rather say the quiet part out loud
-              than have you wonder.</p>
+            <p class="contact-or"><span>or write to us</span></p>
 
-            <ul class="promises">
-              <li>
-                <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
-                  focusable="false"><path
-                    d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
-                <span>We will never ask you to pay with a gift card, a wire
-                  transfer, or an app. Nobody legitimate ever will.</span>
-              </li>
-              <li>
-                <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
-                  focusable="false"><path
-                    d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
-                <span>We will never call you out of the blue and tell you
-                  something is wrong with your computer.</span>
-              </li>
-              <li>
-                <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
-                  focusable="false"><path
-                    d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
-                <span>You type your own passwords. We don't write them down, and
-                  we don't keep them.</span>
-              </li>
-              <li>
-                <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
-                  focusable="false"><path
-                    d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
-                <span>You'll know the price before we start. If we can't help
-                  you, you don't pay.</span>
-              </li>
-              <li>
-                <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
-                  focusable="false"><path
-                    d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
-                <span>You're welcome to have a family member on speakerphone for
-                  the whole visit. We like it when you do.</span>
-              </li>
-            </ul>
-          </div>
-        </section>
-
-        <!-- PRICING -->
-        <section class="band" aria-labelledby="price-h">
-          <div class="wrap">
-            <p class="eyebrow">What it costs</p>
-            <h2 id="price-h">No packages, no contracts, no surprises.</h2>
-            <p class="lead-in">One rate, told to you on the phone before we ever
-              knock on the door.</p>
-
-            <div class="price-grid">
-              <article class="price">
-                <span class="amount">$100</span>
-                <span class="unit">The first hour</span>
-                <p>We sort out what's urgent, fix what we can, and leave you a
-                  written note — in large print — of what we did.</p>
-              </article>
-              <article class="price">
-                <span class="amount">$50</span>
-                <span class="unit">Each half hour after</span>
-                <p>Only if you want to keep going. Most visits are done in an
-                  hour. No travel charge anywhere in La Jolla.</p>
-              </article>
-              <article class="price price--free">
-                <span class="amount">Free</span>
-                <span class="unit">Tech Help Hour</span>
-                <p>Our monthly drop-in workshop at local retirement communities.
-                  Bring your device and a question. No charge, ever.</p>
-              </article>
-            </div>
-
-            <p class="price-note">You'll know the price before we knock on the
-              door. <strong>If we can't help you, you don't pay.</strong> We
-              take checks, or Venmo and Zelle if that's easier for your
-              family.</p>
-          </div>
-        </section>
-
-        <!-- COMMUNITY -->
-        <section class="band band--sand" aria-labelledby="community-h">
-          <div class="narrow">
-            <p class="eyebrow">For activities &amp; life enrichment
-              directors</p>
-            <h2 id="community-h">We'll run a free Tech Help Hour at your
-              community.</h2>
-            <p>One hour, once a month. Ten minutes of a single useful topic
-              taught to the room — how to spot a scam text, how to make
-              everything bigger, how to find a photo — and then open
-              troubleshooting for whoever brings a device.</p>
-            <p>Residents leave with a large-print handout. You get a program
-              that fills the room and doesn't cost you anything. We've worked
-              inside a senior community, so we know the difference between a
-              good activity and one that empties out after ten minutes.</p>
-            <p><a href="#contact">Get in touch about scheduling one</a> — we're
-              currently booking in the La Jolla area.</p>
-          </div>
-        </section>
-
-        <!-- WHO WE ARE -->
-        <section class="band" id="who" aria-labelledby="who-h">
-          <div class="wrap">
-            <p class="eyebrow">Who we are</p>
-            <h2 id="who-h">You should know who's coming to your door.</h2>
-            <p class="lead-in">It's the two of us. Not a call centre, not a
-              rotating cast of contractors. When you book a visit, you'll be
-              told on the phone exactly who is coming.</p>
-
-            <div class="people">
-              <article class="person">
-                <div class="portrait" role="img"
-                  aria-label="Photograph of Lana">
-                  <span>Your photo here</span>
-                </div>
-                <div class="person-body">
-                  <h3>Lana</h3>
-                  <p class="role">Answers the phone. Comes out for most
-                    visits.</p>
-                  <p>She taught herself to write software, and then spent
-                    twenty-five years doing it — building ecommerce systems for
-                    large companies, work that was mostly a matter of making
-                    complicated things make sense to the people who had to use
-                    them.</p>
-                  <p>Because she learned all of it the hard way, she knows
-                    exactly what it feels like not to know. She is patient, she
-                    likes figuring things out, and she likes helping people.
-                    This business is really just those last two at the same
-                    time.</p>
-                  <p>She now works inside a La Jolla senior community. She's the
-                    one who picks up when you call, and the one who calls you
-                    back.</p>
-                </div>
-              </article>
-
-              <article class="person">
-                <div class="portrait" role="img"
-                  aria-label="Photograph of Taylor">
-                  <span>Taylor's photo here</span>
-                </div>
-                <div class="person-body">
-                  <h3>Taylor</h3>
-                  <p class="role">Comes out for the harder visits.</p>
-                  <p>Lana's son. He has been writing code since he was eleven,
-                    was hired as a developer straight out of high school, and
-                    spent eight years as a senior software engineer. Hardware
-                    and software both. There is not much he hasn't seen.</p>
-                  <p>He is also a pharmacy technician, which means he spends his
-                    days explaining complicated things to older people who are
-                    worried and don't want to feel foolish. That is the harder
-                    skill of the two, and the one that matters more here.</p>
-                  <p>If your problem is a stubborn one, he's who we send.</p>
-                </div>
-              </article>
-            </div>
-
-            <p class="who-note">You'll always be told who's coming before they
-              arrive. If anyone ever turns up at your door claiming to be from
-              Tech Together and you weren't expecting them, <strong>don't let
-                them in — call us.</strong></p>
-          </div>
-        </section>
-
-        <!-- TESTIMONIALS -->
-        <section class="band" aria-labelledby="quotes-h">
-          <div class="wrap">
-            <p class="eyebrow">What people say</p>
-            <h2 id="quotes-h">In their words</h2>
-            <p class="lead-in">We'd rather show you three real ones than thirty
-              invented ones.</p>
-
-            <div class="quotes">
-              <blockquote>
-                <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"
-                  focusable="false"><path
-                    d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z" /></svg>
-                <p>[Real quote from your first client goes here. Ask them one
-                  question: “What was it like before, and what's it like now?”
-                  Their answer will be better than anything you could
-                  write.]</p>
-                <cite>First name, Last initial. · La Jolla</cite>
-              </blockquote>
-
-              <blockquote>
-                <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"
-                  focusable="false"><path
-                    d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z" /></svg>
-                <p>[Try to get one from an adult child who lives out of state —
-                  they're often the one searching, and their worry is different
-                  from their parent's.]</p>
-                <cite>First name, Last initial. · Daughter of a client</cite>
-              </blockquote>
-
-              <blockquote>
-                <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"
-                  focusable="false"><path
-                    d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z" /></svg>
-                <p>[And one from an activities director, once you've run a Tech
-                  Help Hour. That one unlocks every other building in town.]</p>
-                <cite>Name · Activities Director</cite>
-              </blockquote>
-            </div>
-          </div>
-        </section>
-
-        <!-- FAQ -->
-        <section class="band band--sand" aria-labelledby="faq-h">
-          <div class="narrow">
-            <p class="eyebrow">Questions</p>
-            <h2 id="faq-h">Things people ask before they call</h2>
-
-            <div class="faq">
-              <details>
-                <summary>Do you come to my home?</summary>
-                <p>Yes. Your house, your apartment, or your unit in a retirement
-                  community. We work on your device, at your table, on your
-                  Wi-Fi — because that's where the problem actually lives.</p>
-              </details>
-              <details>
-                <summary>What if my question is very basic?</summary>
-                <p>Good. Those are our favorite ones, and they're the ones
-                  people are most embarrassed to ask. There's nothing here too
-                  small, and we will never make you feel foolish for asking.</p>
-              </details>
-              <details>
-                <summary>Will you need my passwords?</summary>
-                <p>Sometimes, to fix an email account or an Apple ID. You type
-                  them — not us. We don't write them down and we don't keep
-                  them. If you'd feel better changing a password afterward,
-                  we'll help you do that too.</p>
-              </details>
-              <details>
-                <summary>How much does it cost?</summary>
-                <p>$100 for the first hour, then $50 for each additional half
-                  hour if you want to keep going. Most visits are done in an
-                  hour. No travel fee anywhere in La Jolla, and if we can't help
-                  you, you don't pay.</p>
-              </details>
-              <details>
-                <summary>Can you help my parent while I live out of
-                  state?</summary>
-                <p>Yes, and it's a lot of what we do. We can arrange everything
-                  with you, work with your parent in person, and send you a
-                  short plain-English note afterward about what we did and what
-                  to watch for.</p>
-              </details>
-              <details>
-                <summary>What if you don't answer when I call?</summary>
-                <p>Leave a message. We return every call the same evening —
-                  that's a promise, not a hope. If we don't pick up during the
-                  day it's because we're sitting at someone's kitchen table,
-                  which is exactly what we'd be doing for you.</p>
-              </details>
-              <details>
-                <summary>What areas do you serve?</summary>
-                <p>La Jolla and the surrounding neighborhoods — Bird Rock,
-                  Pacific Beach, University City, and Del Mar. If you're a
-                  little further out, call and ask.</p>
-              </details>
-            </div>
-          </div>
-        </section>
-
-        <!-- CONTACT -->
-        <section class="band" id="contact" aria-labelledby="contact-h">
-          <div class="wrap">
-            <div class="contact-card">
-              <p class="eyebrow">Get in touch</p>
-              <h2 id="contact-h">Let's get it sorted out.</h2>
-              <p class="contact-lede">The easiest thing is to call. We won't
-                always pick up — we're usually sitting at someone's kitchen
-                table — but <strong>we return every call the same
-                  evening.</strong> If you'd rather write, fill this in
-                instead.</p>
-
-              <div class="contact-actions">
-                <a class="btn" href="tel:+18580000000">Call (858) 000-0000</a>
-                <a class="btn btn--outline" href="/start.html">Not sure what's
-                  wrong? Start here</a>
+            <form class="form" action="https://formspree.io/f/YOUR_FORM_ID"
+              method="POST" novalidate>
+              <div class="field">
+                <label for="f-name">Your name</label>
+                <input id="f-name" name="name" type="text" autocomplete="name"
+                  required>
               </div>
 
-              <p class="contact-hint">That last one asks three simple questions
-                — no typing until the end — and tells you what's probably going
-                on before you ever speak to us.</p>
-
-              <p class="contact-or"><span>or write to us</span></p>
-
-              <form class="form" action="https://formspree.io/f/YOUR_FORM_ID"
-                method="POST" novalidate>
+              <div class="field-row">
                 <div class="field">
-                  <label for="f-name">Your name</label>
-                  <input id="f-name" name="name" type="text" autocomplete="name"
-                    required>
+                  <label for="f-phone">Phone number</label>
+                  <p class="hint" id="phone-hint">The best way to reach you.</p>
+                  <input id="f-phone" name="phone" type="tel" autocomplete="tel"
+                    aria-describedby="phone-hint" required>
                 </div>
-
-                <div class="field-row">
-                  <div class="field">
-                    <label for="f-phone">Phone number</label>
-                    <p class="hint" id="phone-hint">The best way to reach
-                      you.</p>
-                    <input id="f-phone" name="phone" type="tel"
-                      autocomplete="tel" aria-describedby="phone-hint" required>
-                  </div>
-
-                  <div class="field">
-                    <label for="f-email">Email <span
-                        class="optional">(optional)</span></label>
-                    <p class="hint" id="email-hint">Only if you'd rather we
-                      write.</p>
-                    <input id="f-email" name="email" type="email"
-                      autocomplete="email" aria-describedby="email-hint">
-                  </div>
-                </div>
-
-                <fieldset class="field">
-                  <legend>Who is this for?</legend>
-                  <div class="radios">
-                    <label class="radio">
-                      <input type="radio" name="who" value="myself" checked>
-                      <span>Myself</span>
-                    </label>
-                    <label class="radio">
-                      <input type="radio" name="who" value="family">
-                      <span>A parent or family member</span>
-                    </label>
-                    <label class="radio">
-                      <input type="radio" name="who" value="community">
-                      <span>A retirement community</span>
-                    </label>
-                  </div>
-                </fieldset>
 
                 <div class="field">
-                  <label for="f-message">What's going on?</label>
-                  <p class="hint" id="msg-hint">Describe it however makes sense
-                    to you. “The thing won't work” is a perfectly good
-                    start.</p>
-                  <textarea id="f-message" name="message" rows="5"
-                    aria-describedby="msg-hint" required></textarea>
+                  <label for="f-email">Email <span
+                      class="optional">(optional)</span></label>
+                  <p class="hint" id="email-hint">Only if you'd rather we
+                    write.</p>
+                  <input id="f-email" name="email" type="email"
+                    autocomplete="email" aria-describedby="email-hint">
                 </div>
+              </div>
 
-                <button class="btn btn--send" type="submit">Send this to
-                  us</button>
-                <p class="form-note">We'll never share your information, and we
-                  won't add you to any mailing list.</p>
-              </form>
-            </div>
+              <fieldset class="field">
+                <legend>Who is this for?</legend>
+                <div class="radios">
+                  <label class="radio">
+                    <input type="radio" name="who" value="myself" checked>
+                    <span>Myself</span>
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="who" value="family">
+                    <span>A parent or family member</span>
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="who" value="community">
+                    <span>A retirement community</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <div class="field">
+                <label for="f-message">What's going on?</label>
+                <p class="hint" id="msg-hint">Describe it however makes sense to
+                  you. “The thing won't work” is a perfectly good start.</p>
+                <textarea id="f-message" name="message" rows="5"
+                  aria-describedby="msg-hint" required></textarea>
+              </div>
+
+              <button class="btn btn--send" type="submit">Send this to
+                us</button>
+              <p class="form-note">We'll never share your information, and we
+                won't add you to any mailing list.</p>
+            </form>
           </div>
-        </section>
+        </div>
+      </section>
 
-      </main>
+    </main>
 
-    </div><!-- /sheet -->
+    <a class="callbar" href="tel:+18580000000">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path
+          d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2z" /></svg>
+      <span>Call (858) 000-0000</span>
+    </a>
 
     <footer>
       <div class="wrap">
