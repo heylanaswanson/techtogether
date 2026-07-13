@@ -1,0 +1,15 @@
+{
+  "name": "Tech Together",
+  "short_name": "Tech Together",
+  "description": "Patient, in-home technology help for older adults in La Jolla and San Diego.",
+  "icons": [
+    { "src": "/favicon-96.png",  "sizes": "96x96",   "type": "image/png" },
+    { "src": "/favicon-128.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/logo-1024-cream.png", "sizes": "1024x1024", "type": "image/png" }
+  ],
+  "theme_color": "#FAF6EF",
+  "background_color": "#FAF6EF",
+  "display": "standalone"
+}

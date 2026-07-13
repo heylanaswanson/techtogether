@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" role="img" aria-label="Tech Together">
+  <title>Tech Together</title>
+  <circle cx="14" cy="15.5" r="5" fill="#1E4C62"/>
+  <circle cx="26" cy="15.5" r="5" fill="#A9D2E4"/>
+  <rect x="6" y="25.5" width="28" height="4" rx="2" fill="#1E4C62"/>
+</svg>

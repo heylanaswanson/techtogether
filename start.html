@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Tell us what's going on — Tech Together</title>
+    <meta name="description"
+      content="Three simple questions and we'll tell you what's probably wrong with your phone, tablet or computer — before you even call. Patient in-home tech help in La Jolla and San Diego.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://techtogethersd.com/start.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Tell us what's going on — Tech Together">
+    <meta property="og:description"
+      content="Three simple questions and we'll tell you what's probably wrong — before you even call.">
+    <meta property="og:url" content="https://techtogethersd.com/start.html">
+    <meta property="og:image" content="https://techtogethersd.com/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet">
+    <style>
+  :root{
+    color-scheme: light;
+    --cream:#FAF6EF; --sand:#EDE3D2; --sky:#A9D2E4; --sky-pale:#D6EAF3;
+    --cove:#1E4C62; --cove-deep:#143646; --ink:#14303D;
+    --gold:#D9A64E; --butter:#E5BE78;
+    --alarm:#8A3B26; --alarm-bg:#F6E2DC;
+    --on-dark:#FFFFFF; --on-dark-soft:#D6EAF3;
+    --display:"Lora",Georgia,serif;
+    --body:"Atkinson Hyperlegible",system-ui,-apple-system,sans-serif;
+    font-size: 20px;
+  }
+  html[data-size="larger"]{font-size:23px}
+  html[data-size="largest"]{font-size:27px}
+  *,*::before,*::after{box-sizing:border-box}
+  html{ background-color:var(--cream); min-height:100%; }
+  body{
+    margin:0;
+    background-color:var(--cream);
+    color:var(--ink);
+    min-height:100vh;
+    font-family:var(--body); font-size:1rem; line-height:1.7;
+    padding:2rem 0 5rem;      /* gutters live on .wrap, same as index.html */
+    position:relative;
+  }
+  /* A fixed cream layer covering the whole viewport, behind all content.
+     Nothing above it can be undercut — not a short page, not a transparent
+     wrapper, not a webview that decides to darken the canvas. */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-color:var(--cream);
+    z-index:-1;
+  }
+  .wrap{ width:min(42rem, 100% - 2.5rem); margin-inline:auto; }
+
+  h1,h2{font-family:var(--display);font-weight:600;color:var(--cove-deep);line-height:1.2;letter-spacing:-.012em;margin:0 0 .5em;text-wrap:balance}
+  h1{font-size:clamp(1.9rem,5.5vw,2.6rem)}
+  h2{font-size:clamp(1.5rem,4.4vw,2rem)}
+  p{margin:0 0 1.1em;max-width:60ch}
+
+  :focus-visible{outline:4px solid var(--cove-deep);outline-offset:3px;border-radius:6px}
+
+  /* header */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+  .logo{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--cove-deep);font-weight:700;font-size:1.25rem;letter-spacing:-.022em}
+  .callout{font-weight:700;font-size:.95rem;color:var(--cove);text-decoration:none;border-bottom:3px solid var(--sky);padding-bottom:2px}
+
+  /* progress */
+  .prog{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cove);margin:0 0 .9rem}
+
+  /* the option buttons — the whole interface, really */
+  .opts{display:grid;gap:.8rem;margin:1.8rem 0 0;padding:0;list-style:none}
+  .opt{
+    display:flex;align-items:center;gap:1rem;width:100%;
+    text-align:left; cursor:pointer;
+    font-family:var(--body); font-size:1.05rem; font-weight:400; line-height:1.45;
+    color:var(--ink);
+    background-color:#fff;
+    border:3px solid var(--sand);
+    border-radius:14px;
+    padding:1.1rem 1.3rem;
+    min-height:4rem;
+    transition:border-color .12s ease, transform .12s ease;
+  }
+  .opt:hover{border-color:var(--sky);transform:translateY(-1px)}
+  .opt .dot{flex:0 0 auto;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--sky-pale);border:2px solid var(--sky)}
+  .opt.warn{border-color:#E5C3B8;background-color:var(--alarm-bg)}
+  .opt.warn:hover{border-color:var(--alarm)}
+  .opt.warn .dot{background:#fff;border-color:var(--alarm)}
+  .opt.warn strong{color:var(--alarm)}
+
+  /* reassurance */
+  .reassure{
+    background-color:#fff; border:3px solid var(--sky); border-radius:16px;
+    padding:1.6rem 1.7rem; margin:1.5rem 0 0;
+  }
+  .reassure .hd{font-family:var(--display);font-size:1.35rem;font-weight:600;color:var(--cove-deep);margin:0 0 .6rem;line-height:1.25}
+  .reassure p:last-child{margin-bottom:0}
+  .facts{list-style:none;padding:0;margin:1.2rem 0 0;display:grid;gap:.7rem}
+  .facts li{display:flex;gap:.8rem;align-items:flex-start;font-size:.98rem}
+  .facts svg{flex:0 0 auto;width:1.5rem;height:1.5rem;fill:var(--sky);margin-top:.2rem}
+
+  /* the safety interstitial */
+  .alarm{
+    background-color:var(--alarm-bg); border:3px solid var(--alarm); border-radius:16px;
+    padding:1.7rem;
+  }
+  .alarm h2{color:var(--alarm);margin-top:0}
+  .alarm ol{margin:1.2rem 0 0;padding-left:1.3rem}
+  .alarm li{margin-bottom:.7rem}
+  .alarm strong{color:var(--alarm)}
+
+  /* buttons */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+    min-height:3.5rem;padding:.9rem 1.8rem;
+    font-family:var(--body);font-size:1.05rem;font-weight:700;
+    text-decoration:none;border-radius:999px;cursor:pointer;
+    border:3px solid var(--cove);background-color:var(--cove);color:#fff;
+    transition:background-color .12s ease,transform .12s ease;
+  }
+  .btn:hover{background-color:var(--cove-deep);border-color:var(--cove-deep);transform:translateY(-2px)}
+  .btn--big{width:100%;font-size:1.15rem;min-height:4rem}
+  .btn--alarm{background-color:var(--alarm);border-color:var(--alarm)}
+  .btn--alarm:hover{background-color:#6E2D1C;border-color:#6E2D1C}
+  .btn--quiet{background:transparent;color:var(--cove);border-color:var(--sand)}
+  .btn--quiet:hover{background-color:var(--sand);color:var(--cove-deep);border-color:var(--sand)}
+
+  .row{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:1.8rem;align-items:center}
+
+  /* the escape hatch — present on every single screen */
+  .escape{
+    margin-top:2.2rem;padding-top:1.4rem;border-top:2px solid var(--sand);
+    font-size:.95rem;color:var(--cove);max-width:none;
+  }
+  .escape a{color:var(--cove);font-weight:700}
+
+  /* final contact step */
+  .field{margin-bottom:1.5rem}
+  label{display:block;font-weight:700;font-size:1.02rem;margin-bottom:.35rem;color:var(--cove-deep)}
+  .hint{margin:0 0 .6rem;font-size:.9rem;color:var(--cove);line-height:1.5}
+  input[type=text],input[type=tel],textarea{
+    width:100%;font-family:var(--body);font-size:1.05rem;line-height:1.5;
+    padding:.85rem 1rem;min-height:3.4rem;
+    color:var(--ink);-webkit-text-fill-color:var(--ink);
+    background-color:#fff;border:3px solid var(--sand);border-radius:10px;
+  }
+  input:focus-visible,textarea:focus-visible{outline:4px solid var(--gold);outline-offset:2px;border-color:var(--cove)}
+  textarea{resize:vertical}
+
+  .summary{
+    background-color:var(--sky-pale);border-radius:12px;padding:1.1rem 1.3rem;margin-bottom:1.8rem;
+    font-size:.98rem;
+  }
+  .summary p{margin:0;max-width:none}
+  .summary strong{color:var(--cove-deep)}
+
+  .done{background-color:var(--cove-deep);color:var(--on-dark);border-radius:16px;padding:2rem}
+  .done h2{color:#fff}
+  .done p{color:var(--on-dark-soft)}
+
+  .sr{position:absolute;left:-9999px}
+
+  /* This page is light by design. If the device is in dark mode, hold the line.
+     The main page has this; the start page didn't — that was the bug. */
+  @media (prefers-color-scheme: dark){
+    html, body{ background-color: var(--cream); color: var(--ink); }
+    .opt{ background-color:#fff; color: var(--ink); }
+    .opt.warn{ background-color: var(--alarm-bg); }
+    .reassure{ background-color:#fff; }
+    .alarm{ background-color: var(--alarm-bg); }
+    .summary{ background-color: var(--sky-pale); color: var(--ink); }
+    input[type=text],input[type=tel],textarea{ background-color:#fff; color: var(--ink); }
+    .done{ background-color: var(--cove-deep); color: var(--on-dark); }
+    h1,h2,label{ color: var(--cove-deep); }
+    .done h2{ color:#fff; }
+    .done p{ color: var(--on-dark-soft); }
+  }
+
+  @media (prefers-contrast: more){
+    :root{ --sand:#E4D6BE; }
+    .opt{ border-color: var(--cove); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none!important;animation:none!important}
+    .btn:hover,.opt:hover{transform:none}
+  }
+</style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <div class="top">
+        <a class="logo" href="/index.html">
+          <svg width="36" height="36" viewBox="0 0 40 40"
+            aria-hidden="true"><circle cx="14" cy="15.5" r="5"
+              fill="#1E4C62" /><circle cx="26" cy="15.5" r="5"
+              fill="#A9D2E4" /><rect x="6" y="25.5" width="28" height="4" rx="2"
+              fill="#1E4C62" /></svg>
+          Tech Together
+        </a>
+        <a class="callout" href="tel:+18580000000">Or just call — (858)
+          000-0000</a>
+      </div>
+
+      <p class="sr" role="status" aria-live="polite" id="live"></p>
+
+      <main id="stage"></main>
+
+    </div>
+
+    <script>
+(function(){
+  "use strict";
+
+  var stage = document.getElementById('stage');
+  var live  = document.getElementById('live');
+  var A = {};   // answers
+
+  /* ---------------------------------------------------------------
+     Reassurance copy. Every line here has to be TRUE — this is a page
+     about not being deceived, so the comfort has to be honest comfort.
+     No invented statistics, no fake "3 people this week" counters.
+     What's true and comforting: the problem is common, the fix is known,
+     and here's roughly how long it takes.
+  ----------------------------------------------------------------*/
+  var ISSUES = {
+    silent: {
+      label: "I can't hear it ring, or it's gone quiet",
+      hd: "This one is almost always a single switch.",
+      body: "There's a small silent switch on the side of the phone, and there's a setting called Focus that can turn your ringer off without telling you. People flip both by accident constantly — usually while putting the phone in a pocket or a purse. You didn't break anything.",
+      facts: ["Usually about five minutes", "One setting, and we'll show you where it is", "We'll turn the ringer volume up while we're there"]
+    },
+    storage: {
+      label: "It says the storage is full",
+      hd: "Nothing is lost. The phone is just out of room.",
+      body: "This message frightens people because it sounds permanent. It isn't. It means the photos and apps have filled the space. We go through it together, clear out what you don't need, and make sure the photos you care about are safely kept somewhere else first.",
+      facts: ["Usually 30 to 45 minutes", "Nothing gets deleted without you saying so", "We'll set it up so it doesn't fill again"]
+    },
+    email: {
+      label: "I can't get into my email",
+      hd: "This is the single most common call we get.",
+      body: "Email locks people out for a dozen reasons — a password changed, a phone was replaced, a provider changed something without asking. It's frustrating and it feels like your own fault. It usually isn't.",
+      facts: ["Usually 30 to 60 minutes", "You type your own password. We never write it down", "If we have to reset it, we'll write the new one down for you — in large print"]
+    },
+    photos: {
+      label: "I can't find my photos, or send them",
+      hd: "Your photos are there. They're just badly organized.",
+      body: "Phones bury photos in a way that makes no sense to anyone. Finding the one you want, sending it to your children so it doesn't arrive tiny and blurry, making an album that's actually worth keeping — this is a good hour's work and it's one of the most satisfying visits we do.",
+      facts: ["Usually about an hour", "We'll teach you to find them by date and by person", "We can print one, too, if you'd like"]
+    },
+    text: {
+      label: "The text is too small to read",
+      hd: "You are very much not the only one.",
+      body: "Phones ship with text sized for twenty-five-year-olds. It can be made considerably bigger, and bolder, and the whole interface can be zoomed. Most people don't know these settings exist because nobody ever tells them.",
+      facts: ["Usually 15 to 20 minutes", "We'll do the same for your email and your web browser", "There's no downside — nothing stops working"]
+    },
+    newdevice: {
+      label: "I got a new one and I need it set up",
+      hd: "Don't struggle with this alone. It's genuinely hard.",
+      body: "Setting up a new phone or computer is the worst part of owning one, and the instructions assume you already know things nobody told you. We do the whole thing — move your contacts, your photos, your email, your apps — and then we sit with you until you can use it.",
+      facts: ["Usually 1 to 2 hours", "Bring the old device too, if you still have it", "We'll write down anything new you need to remember"]
+    },
+    slow: {
+      label: "It's very slow",
+      hd: "Slow almost never means broken.",
+      body: "It usually means too many things are running, the storage is nearly full, or something got installed that shouldn't have been. All three are fixable, and none of them means you need to buy a new computer — which is what someone will inevitably try to sell you.",
+      facts: ["Usually about an hour", "We'll tell you honestly if it really is time to replace it", "We don't sell computers, so we have no reason to say you need one"]
+    },
+    print: {
+      label: "It won't print",
+      hd: "Printers are the worst thing in technology. This is not you.",
+      body: "Everyone hates printers, including people who do this for a living. They disconnect from the Wi-Fi for no reason, they lie about ink, and they refuse to talk to phones. It's a solvable problem and it's not a reflection on you.",
+      facts: ["Usually 30 to 45 minutes", "We'll get it printing from your phone too, not just the computer", "We'll write down how to reconnect it if it wanders off again"]
+    },
+    tv: {
+      label: "I can't get the TV or Netflix to work",
+      hd: "There are too many remotes. That's the actual problem.",
+      body: "Modern televisions require you to know which input, which app, which account, and which of four remotes. It's badly designed. We'll simplify it, and if we can, we'll get it down to one remote and write the steps on a card you can keep by the chair.",
+      facts: ["Usually 30 to 60 minutes", "We'll leave you a large-print card with the steps", "We can label the remote buttons if that helps"]
+    },
+    portal: {
+      label: "I need to use a doctor's portal or open something they sent",
+      hd: "This is the most important one on this list.",
+      body: "Patient portals are badly built and everyone finds them confusing. But being locked out of your own medical information is genuinely serious, so we treat this one as a priority. We'll get you in, and we'll write down how to get back in.",
+      facts: ["Usually 30 to 60 minutes", "We'll make sure you can do it again without us", "Bring any letter or paperwork the office sent you"]
+    },
+    other: {
+      label: "Something else, or I'm not sure",
+      hd: "That's a completely fine answer.",
+      body: "Most people can't name the problem, and you shouldn't have to. \"The thing won't work\" is a perfectly good description and we've started from far less. Tell us what you can and we'll work it out when we get there.",
+      facts: ["We'll ask a few questions on the phone", "If we can't help, you don't pay", "Nothing you say will sound foolish to us"]
+    }
+  };
+
+  var DEVICE_ISSUES = {
+    iphone: ["silent","storage","email","photos","text","newdevice","portal","other"],
+    ipad:   ["storage","email","photos","text","newdevice","portal","other"],
+    computer:["email","slow","print","portal","newdevice","other"],
+    printer:["print","other"],
+    tv:     ["tv","other"],
+    unsure: ["email","photos","print","text","other"]
+  };
+
+  var DEVICE_LABELS = {
+    iphone:"iPhone", ipad:"iPad or tablet", computer:"Computer (Mac or Windows)",
+    printer:"Printer", tv:"TV or streaming", unsure:"I'm not sure what it is"
+  };
+
+  /* ---------- render helpers ---------- */
+  function el(html){ var d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; }
+
+  function escapeHatch(){
+    return '<p class="escape">Don\'t want to do this? That\'s completely fine — <a href="tel:+18580000000">call us on (858) 000-0000</a> and describe it out loud. We return every call the same evening.</p>';
+  }
+
+  function render(html, announce){
+    stage.innerHTML = html;
+    if(announce) live.textContent = announce;
+    var h = stage.querySelector('h1,h2');
+    if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    window.scrollTo({top:0, behavior:'auto'});
+  }
+
+  function optList(items, cls){
+    return '<ul class="opts">' + items.map(function(it){
+      return '<li><button type="button" class="opt '+(it.warn?'warn':'')+'" data-val="'+it.val+'">'+
+             '<span class="dot" aria-hidden="true"></span><span>'+(it.warn?'<strong>':'')+it.label+(it.warn?'</strong>':'')+'</span></button></li>';
+    }).join('') + '</ul>';
+  }
+
+  /* ---------- STEP 1 — who ---------- */
+  function step1(){
+    render(
+      '<p class="prog">Question 1 of 3</p>'+
+      '<h1>Who are we helping?</h1>'+
+      '<p>No wrong answer here. We just want to know who we\'ll be sitting with.</p>'+
+      optList([
+        {val:'self', label:'Myself'},
+        {val:'family', label:'My parent, or another family member'},
+        {val:'community', label:'A retirement community — I\'m asking about a workshop'}
+      ])+
+      escapeHatch(),
+      'Question 1 of 3. Who are we helping?'
+    );
+    bind(function(v){
+      A.who = v;
+      if(v === 'community') return community();
+      step2();
+    });
+  }
+
+  /* ---------- STEP 2 — device ---------- */
+  function step2(){
+    render(
+      '<p class="prog">Question 2 of 3</p>'+
+      '<h1>What is giving you trouble?</h1>'+
+      '<p>If more than one thing is wrong, pick whichever is bothering you most. We\'ll look at all of it when we\'re there.</p>'+
+      optList(Object.keys(DEVICE_LABELS).map(function(k){ return {val:k, label:DEVICE_LABELS[k]}; }))+
+      escapeHatch(),
+      'Question 2 of 3. What device is giving you trouble?'
+    );
+    bind(function(v){ A.device = v; step3(); });
+  }
+
+  /* ---------- STEP 3 — issue (branches on device) ---------- */
+  function step3(){
+    var keys = DEVICE_ISSUES[A.device] || DEVICE_ISSUES.unsure;
+    var items = keys.map(function(k){ return {val:k, label:ISSUES[k].label}; });
+
+    // The safety option is always last, and always looks different.
+    items.push({ val:'scam', warn:true, label:'I think I\'ve been scammed, or I clicked something I shouldn\'t have' });
+
+    render(
+      '<p class="prog">Question 3 of 3</p>'+
+      '<h1>What\'s happening with it?</h1>'+
+      '<p>Pick the closest one. It doesn\'t have to be exact.</p>'+
+      optList(items)+
+      escapeHatch(),
+      'Question 3 of 3. What is happening with it?'
+    );
+    bind(function(v){
+      if(v === 'scam') return safety();
+      A.issue = v;
+      reassure();
+    });
+  }
+
+  /* ---------- SAFETY BYPASS ----------
+     If someone thinks they've been scammed, they should not be filling in
+     a form. Get out of the way and tell them to call. This branch is the
+     reason the whole thing is worth building.                          */
+  function safety(){
+    A.issue = 'scam';
+    render(
+      '<div class="alarm">'+
+        '<h2>Stop — don\'t fill in a form. Call us.</h2>'+
+        '<p>If you think you\'ve been scammed or you clicked something you shouldn\'t have, this is time-sensitive and we don\'t want you waiting on an email.</p>'+
+        '<p><strong>You have not done anything stupid.</strong> These messages are designed by professionals to fool careful people, and they fool careful people every day.</p>'+
+        '<a class="btn btn--alarm btn--big" href="tel:+18580000000">Call (858) 000-0000 now</a>'+
+        '<ol>'+
+          '<li><strong>Do not call any phone number that was in the message.</strong> That number belongs to them.</li>'+
+          '<li><strong>Do not let anyone talk you into installing anything</strong> while you\'re on the phone with them — not to "fix" it, not to "check" it.</li>'+
+          '<li>If you gave out a password, we will change it together. If you gave out card or bank details, call your bank now — before you call us.</li>'+
+          '<li>Don\'t delete the message. We\'ll want to look at it.</li>'+
+        '</ol>'+
+      '</div>'+
+      '<div class="row"><button type="button" class="btn btn--quiet" id="back">Go back</button></div>',
+      'Important. If you think you have been scammed, please call us right away.'
+    );
+    document.getElementById('back').addEventListener('click', step3);
+  }
+
+  /* ---------- REASSURANCE ---------- */
+  function reassure(){
+    var i = ISSUES[A.issue];
+    render(
+      '<p class="prog">Here\'s the good news</p>'+
+      '<h1>'+i.hd+'</h1>'+
+      '<div class="reassure">'+
+        '<p>'+i.body+'</p>'+
+        '<ul class="facts">'+ i.facts.map(function(f){
+          return '<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><span>'+f+'</span></li>';
+        }).join('') +'</ul>'+
+      '</div>'+
+      '<div class="row">'+
+        '<button type="button" class="btn" id="go">Book a visit</button>'+
+        '<button type="button" class="btn btn--quiet" id="back">That\'s not quite it</button>'+
+      '</div>'+
+      escapeHatch(),
+      i.hd
+    );
+    document.getElementById('go').addEventListener('click', contact);
+    document.getElementById('back').addEventListener('click', step3);
+  }
+
+  /* ---------- COMMUNITY BRANCH ---------- */
+  function community(){
+    A.device = 'n/a'; A.issue = 'workshop';
+    render(
+      '<h1>We\'d love to run a Tech Help Hour for your residents.</h1>'+
+      '<div class="reassure">'+
+        '<p class="hd">One hour, once a month, no charge.</p>'+
+        '<p>Ten minutes of one useful topic taught to the room — spotting a scam text, making everything bigger, finding a photo — then open troubleshooting for whoever brings a device. Residents leave with a large-print handout.</p>'+
+        '<ul class="facts">'+
+          '<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><span>Free, always. We don\'t sell anything in the room.</span></li>'+
+          '<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><span>We\'ve worked inside a senior community. We know the difference between a good activity and one that empties out.</span></li>'+
+          '<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><span>We bring the power strips and the charging cables.</span></li>'+
+        '</ul>'+
+      '</div>'+
+      '<div class="row"><button type="button" class="btn" id="go">Get in touch</button></div>'+
+      escapeHatch(),
+      'We would love to run a Tech Help Hour for your residents.'
+    );
+    document.getElementById('go').addEventListener('click', contact);
+  }
+
+  /* ---------- CONTACT ---------- */
+  function contact(){
+    var summaryText;
+    if(A.issue === 'workshop'){
+      summaryText = 'You\'re asking about a <strong>Tech Help Hour workshop</strong>.';
+    } else {
+      summaryText = 'You\'re telling us: <strong>'+ DEVICE_LABELS[A.device] +'</strong> — <strong>'+ ISSUES[A.issue].label.toLowerCase() +'</strong>.';
+    }
+
+    render(
+      '<h1>Last part. Just so we can reach you.</h1>'+
+      '<div class="summary"><p>'+summaryText+' We\'ve got that written down — you don\'t need to explain it again.</p></div>'+
+      '<form id="f" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>'+
+        '<div class="field">'+
+          '<label for="n">Your name</label>'+
+          '<input id="n" name="name" type="text" autocomplete="name" required>'+
+        '</div>'+
+        '<div class="field">'+
+          '<label for="p">Phone number</label>'+
+          '<p class="hint">The best way to reach you. We return every call the same evening.</p>'+
+          '<input id="p" name="phone" type="tel" autocomplete="tel" aria-describedby="ph" required>'+
+          '<span class="sr" id="ph">Phone number, required</span>'+
+        '</div>'+
+        '<div class="field">'+
+          '<label for="m">Anything else we should know? <span style="font-weight:400;color:var(--cove)">(optional)</span></label>'+
+          '<p class="hint">Only if you want to. You\'ve already told us plenty.</p>'+
+          '<textarea id="m" name="message" rows="4"></textarea>'+
+        '</div>'+
+        '<input type="hidden" name="who" value="'+(A.who||'')+'">'+
+        '<input type="hidden" name="device" value="'+(DEVICE_LABELS[A.device]||A.device||'')+'">'+
+        '<input type="hidden" name="issue" value="'+(A.issue==='workshop'?'Tech Help Hour workshop':(ISSUES[A.issue]?ISSUES[A.issue].label:''))+'">'+
+        '<button class="btn btn--big" type="submit">Send this to Tech Together</button>'+
+      '</form>'+
+      escapeHatch(),
+      'Last step. Please give us your name and phone number.'
+    );
+
+    document.getElementById('f').addEventListener('submit', function(e){
+      e.preventDefault();
+      var f = e.target;
+      if(!f.name.value.trim() || !f.phone.value.trim()){
+        live.textContent = 'Please fill in your name and phone number.';
+        (!f.name.value.trim() ? f.name : f.phone).focus();
+        return;
+      }
+      // In production this posts to Formspree. Here we just show the confirmation.
+      done(f.name.value.trim());
+    });
+  }
+
+  function done(name){
+    render(
+      '<div class="done">'+
+        '<h2>Thank you, '+name+'. We\'ve got it.</h2>'+
+        '<p>We\'ll call you this evening. If you\'d rather not wait, ring us any time on <strong>(858) 000-0000</strong>.</p>'+
+        '<p>And one more time, because people worry about this: <strong>there was nothing foolish about anything you told us.</strong></p>'+
+      '</div>',
+      'Thank you. We will call you this evening.'
+    );
+  }
+
+  function bind(cb){
+    stage.querySelectorAll('.opt').forEach(function(b){
+      b.addEventListener('click', function(){ cb(b.getAttribute('data-val')); });
+    });
+  }
+
+  step1();
+})();
+</script>
+  </body>
+</html>
