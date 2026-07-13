@@ -105,7 +105,7 @@
     {
       "@type": "Question",
       "name": "What if you do not answer when I call?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Leave a message. We return every call the same evening. If we do not pick up during the day it is because we are sitting at someone else's kitchen table, which is exactly what we would be doing for you." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Leave a message. We return every call — usually the same evening, and always within one business day. If we do not pick up during the day it is because we are sitting at someone else's kitchen table, which is exactly what we would be doing for you." }
     },
     {
       "@type": "Question",
@@ -127,6 +127,7 @@
 
     --cream:      #FAF6EF;
     --sand:       #EDE3D2;
+    --edge:       #4E7E96;   /* borders. 4.1:1 on cream, 3.5:1 on sand — visible. */
     --sky:        #A9D2E4;   /* DECORATION ONLY — fills, rules, icons. Never body text on dark. */
     --sky-pale:   #D6EAF3;
     --cove:       #1E4C62;
@@ -261,8 +262,8 @@
     transition: transform .15s ease, background-color .15s ease;
   }
   .btn:hover{ background-color: var(--rust-lift); border-color: var(--rust-lift); color:#fff; transform: translateY(-2px); }
-  .btn--ghost{ background-color: transparent; border-color: var(--sand); color: var(--cove); }
-  .btn--ghost:hover{ background-color: var(--sand); border-color: var(--sand); color: var(--cove-deep); }
+  .btn--ghost{ background-color: transparent; border-color: var(--cove); color: var(--cove); }
+  .btn--ghost:hover{ background-color: var(--cove); border-color: var(--cove); color: #fff; }
 
   /* ---------- Header ---------- */
   .masthead{
@@ -463,7 +464,7 @@
   }
   .card{
     background: var(--cream);
-    border: 2px solid var(--sand);
+    border: 2px solid var(--edge);
     border-radius: 14px;
     padding: 1.6rem;
   }
@@ -504,7 +505,7 @@
   /* Pricing */
   .price-grid{ display:grid; gap:1.4rem; margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
   .price{
-    background-color:#fff; border:2px solid var(--sand);
+    background-color:#fff; border:2px solid var(--edge);
     border-radius:14px; padding:1.7rem;
   }
   .price--free{ border:3px solid var(--rust); }
@@ -536,7 +537,7 @@
   }
   .person{
     background-color: var(--cream);
-    border: 2px solid var(--sand);
+    border: 2px solid var(--edge);
     border-radius: 16px;
     padding: 1.6rem;
   }
@@ -581,7 +582,7 @@
     background: var(--cream);
     border-radius:14px;
     padding: 1.8rem;
-    border: 2px solid var(--sand);
+    border: 2px solid var(--edge);
   }
   blockquote p{
     font-family: var(--font-display);
@@ -799,8 +800,15 @@
 
   /* Respect an OS-level request for more contrast */
   @media (prefers-contrast: more){
-    :root{ --sky-pale:#E9F4F9; --on-dark-soft:#FFFFFF; --sand:#E4D6BE; }
-    .card, .price, blockquote{ border-color: var(--cove); }
+    /* Darkening the background alone made TEXT contrast worse. Darken both. */
+    :root{
+      --sky-pale:#E9F4F9;
+      --on-dark-soft:#FFFFFF;
+      --sand:#E4D6BE;
+      --edge:#2F5F76;
+      --cove:#143646;      /* pull links/eyebrows down to match the darker ground */
+    }
+    .card, .price, blockquote, .person{ border-color: var(--cove-deep); }
     a{ text-decoration-thickness: 3px; }
   }
 
@@ -847,7 +855,7 @@
             <div class="phone-block">
               <a class="phone-link" href="tel:+18580000000">Call (858)
                 000-0000</a>
-              <p class="phone-promise">Every call returned the same evening.</p>
+              <p class="phone-promise">Every call returned within a day.</p>
             </div>
           </nav>
         </div>
@@ -866,8 +874,8 @@
             <a class="btn btn--ghost" href="#help">See what we help with</a>
           </div>
           <p class="reassure">Call any time. If we don't pick up, leave a
-            message — <strong>we return every call the same
-              evening.</strong></p>
+            message — <strong>we return every call.</strong> Usually the same
+            evening, always within one business day.</p>
 
           <div class="sizer">
             <p class="sizer-label" id="sizer-label">Text too small? Make this
@@ -1267,10 +1275,11 @@
             </details>
             <details>
               <summary>What if you don't answer when I call?</summary>
-              <p>Leave a message. We return every call the same evening — that's
-                a promise, not a hope. If we don't pick up during the day it's
-                because we're sitting at someone's kitchen table, which is
-                exactly what we'd be doing for you.</p>
+              <p>Leave a message. We return every call — usually the same
+                evening, and always within one business day. That's a promise,
+                not a hope. If we don't pick up during the day it's because
+                we're sitting at someone's kitchen table, which is exactly what
+                we'd be doing for you.</p>
             </details>
             <details>
               <summary>What areas do you serve?</summary>
@@ -1290,8 +1299,9 @@
             <h2 id="contact-h">Let's get it sorted out.</h2>
             <p class="contact-lede">The easiest thing is to call. We won't
               always pick up — we're usually sitting at someone's kitchen table
-              — but <strong>we return every call the same evening.</strong> If
-              you'd rather write, fill this in instead.</p>
+              — but <strong>we return every call.</strong> Usually the same
+              evening, always within one business day. If you'd rather write,
+              fill this in instead.</p>
 
             <div class="contact-actions">
               <a class="btn" href="tel:+18580000000">Call (858) 000-0000</a>

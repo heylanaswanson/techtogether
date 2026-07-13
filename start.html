@@ -27,7 +27,7 @@
     <style>
   :root{
     color-scheme: light;
-    --cream:#FAF6EF; --sand:#EDE3D2; --sky:#A9D2E4; --sky-pale:#D6EAF3;
+    --cream:#FAF6EF; --sand:#EDE3D2; --edge:#4E7E96; --sky:#A9D2E4; --sky-pale:#D6EAF3;
     --cove:#1E4C62; --cove-deep:#143646; --ink:#14303D;
     /* Same rule as the main page: warm AND dark on light grounds. */
     --rust:#9C3E26; --rust-deep:#8F3821; --rust-lift:#832F1C;
@@ -99,7 +99,7 @@
     font-family:var(--body); font-size:1.05rem; font-weight:400; line-height:1.45;
     color:var(--ink);
     background-color:#fff;
-    border:3px solid var(--sand);
+    border:3px solid var(--edge);
     border-radius:14px;
     padding:1.1rem 1.3rem;
     min-height:4rem;
@@ -146,8 +146,8 @@
   .btn--big{width:100%;font-size:1.15rem;min-height:4rem}
   .btn--alarm{background-color:var(--alarm);border-color:var(--alarm)}
   .btn--alarm:hover{background-color:#4F0B04;border-color:#4F0B04}
-  .btn--quiet{background:transparent;color:var(--cove);border-color:var(--sand)}
-  .btn--quiet:hover{background-color:var(--sand);color:var(--cove-deep);border-color:var(--sand)}
+  .btn--quiet{background:transparent;color:var(--cove);border-color:var(--cove)}
+  .btn--quiet:hover{background-color:var(--cove);color:#fff;border-color:var(--cove)}
 
   .row{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:1.8rem;align-items:center}
 
@@ -166,7 +166,7 @@
     width:100%;font-family:var(--body);font-size:1.05rem;line-height:1.5;
     padding:.85rem 1rem;min-height:3.4rem;
     color:var(--ink);-webkit-text-fill-color:var(--ink);
-    background-color:#fff;border:3px solid var(--sand);border-radius:10px;
+    background-color:#fff;border:3px solid var(--edge);border-radius:10px;
   }
   input:focus-visible,textarea:focus-visible{outline:4px solid var(--gold);outline-offset:2px;border-color:var(--cove)}
   textarea{resize:vertical}
@@ -181,6 +181,18 @@
   .done{background-color:var(--cove-deep);color:var(--on-dark);border-radius:16px;padding:2rem}
   .done h2{color:#fff}
   .done p{color:var(--on-dark-soft)}
+
+  .send-error{
+    margin-top:1.2rem;
+    padding:1rem 1.2rem;
+    background-color:var(--alarm-bg);
+    border:3px solid var(--alarm-line);
+    border-radius:12px;
+    color:var(--ink);
+    font-size:1rem;
+    line-height:1.6;
+  }
+  .send-error a{ color:var(--alarm); font-weight:700; }
 
   .sr{position:absolute;left:-9999px}
 
@@ -364,7 +376,7 @@
   function el(html){ var d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; }
 
   function escapeHatch(){
-    return '<p class="escape">Don\'t want to do this? That\'s completely fine — <a href="tel:+18580000000">call us on (858) 000-0000</a> and describe it out loud. We return every call the same evening.</p>';
+    return '<p class="escape">Don\'t want to do this? That\'s completely fine — <a href="tel:+18580000000">call us on (858) 000-0000</a> and describe it out loud. We return every call within a day.</p>';
   }
 
   function render(html, announce){
@@ -527,7 +539,7 @@
         '</div>'+
         '<div class="field">'+
           '<label for="p">Phone number</label>'+
-          '<p class="hint">The best way to reach you. We return every call the same evening.</p>'+
+          '<p class="hint">The best way to reach you. We return every call — usually the same evening, always within a day.</p>'+
           '<input id="p" name="phone" type="tel" autocomplete="tel" aria-describedby="ph" required>'+
           '<span class="sr" id="ph">Phone number, required</span>'+
         '</div>'+
@@ -548,13 +560,48 @@
     document.getElementById('f').addEventListener('submit', function(e){
       e.preventDefault();
       var f = e.target;
+
       if(!f.name.value.trim() || !f.phone.value.trim()){
         live.textContent = 'Please fill in your name and phone number.';
         (!f.name.value.trim() ? f.name : f.phone).focus();
         return;
       }
-      // In production this posts to Formspree. Here we just show the confirmation.
-      done(f.name.value.trim());
+
+      var btn = f.querySelector('button[type=submit]');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      live.textContent = 'Sending.';
+
+      // Actually post it. Formspree's AJAX endpoint: same URL, Accept: application/json.
+      fetch(f.action, {
+        method: 'POST',
+        body: new FormData(f),
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(function(res){
+        if(!res.ok) throw new Error('Formspree returned ' + res.status);
+        done(f.name.value.trim());
+      })
+      .catch(function(err){
+        // NEVER tell someone we got their message when we didn't. Fail loudly and
+        // give them the phone number — which works whether or not our form does.
+        console.error(err);
+        btn.disabled = false;
+        btn.textContent = 'Try again';
+        var warn = document.getElementById('send-error');
+        if(!warn){
+          warn = document.createElement('p');
+          warn.id = 'send-error';
+          warn.setAttribute('role','alert');
+          warn.className = 'send-error';
+          f.appendChild(warn);
+        }
+        warn.innerHTML = 'Something went wrong sending that — it did <strong>not</strong> reach us. '
+                       + 'Please try again, or just call us on <a href="tel:+18580000000">(858) 000-0000</a>. '
+                       + 'We\'d rather hear from you by phone anyway.';
+        warn.focus();
+        live.textContent = 'That did not send. Please try again or call us.';
+      });
     });
   }
 
@@ -562,10 +609,10 @@
     render(
       '<div class="done">'+
         '<h2>Thank you, '+name+'. We\'ve got it.</h2>'+
-        '<p>We\'ll call you this evening. If you\'d rather not wait, ring us any time on <strong>(858) 000-0000</strong>.</p>'+
+        '<p>We\'ll call you back — usually this evening, and always within one business day. If you\'d rather not wait, ring us any time on <strong>(858) 000-0000</strong>.</p>'+
         '<p>And one more time, because people worry about this: <strong>there was nothing foolish about anything you told us.</strong></p>'+
       '</div>',
-      'Thank you. We will call you this evening.'
+      'Thank you. We will call you back within one business day.'
     );
   }
 
