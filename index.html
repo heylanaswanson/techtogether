@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -8,8 +11,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-MM9WC35S');</script>
     <!-- End Google Tag Manager -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Tech Together — Patient, in-home tech help for seniors in La Jolla
       &amp; San Diego</title>
@@ -132,7 +133,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {
       "@type": "Question",
       "name": "Can you help my parent while I live out of state?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes, and this is much of what we do. We can arrange the visit with you, work with your parent in person, and send you a short plain-English note afterward about what we did." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, and this is much of what we do. We can arrange the visit with you, work with your parent in person, and send you a short plain-English note afterward about what we did. The same person comes to every visit, so your parent is never handed off to someone new." }
     }
   ]
 }
@@ -603,14 +604,38 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     border-radius: 16px;
     padding: 1.6rem;
   }
+  /* One person, so the card gets a photo beside the text rather than above it. */
+  .person--solo{
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 1.8rem;
+    grid-template-columns: minmax(min(100%, 15rem), 20rem) 1fr;
+    align-items: start;
+    padding: 1.8rem;
+  }
+  .person--solo .portrait{ margin-bottom: 0; }
+  @media (max-width: 44em){
+    .person--solo{ grid-template-columns: 1fr; }
+  }
   .portrait{
     width: 100%;
     aspect-ratio: 4 / 3;
     border-radius: 12px;
+    overflow: hidden;
     background-color: var(--sky-pale);
-    border: 3px dashed var(--sky);
     display: grid; place-items: center;
     margin-bottom: 1.2rem;
+  }
+  .portrait img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* fills the frame without squashing the face */
+    object-position: center top;   /* if it crops, crop from the bottom, not the head */
+    display: block;
+  }
+  /* dashed styling only applies when it's still an empty placeholder */
+  .portrait:not(:has(img)){
+    border: 3px dashed var(--sky);
   }
   .portrait span{
     font-size: .85rem; font-weight: 700; letter-spacing: .1em;
@@ -1305,93 +1330,82 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="wrap">
           <p class="eyebrow">Who we are</p>
           <h2 id="who-h">You should know who's coming to your door.</h2>
-          <p class="lead-in">It's the two of us. Not a call centre, not a
-            rotating cast of contractors. When you book a visit, you'll be told
-            on the phone exactly who is coming — so we'll introduce ourselves
-            properly.</p>
+          <p class="lead-in">We're a small family business — two of us, with
+            more than thirty years in software between us. Not a call centre,
+            not a rotating cast of contractors.</p>
 
-          <div class="people">
-            <article class="person">
-              <div class="portrait" role="img" aria-label="Photograph of Lana">
-                <span>Your photo here</span>
-              </div>
-              <div class="person-body">
-                <h3>Lana</h3>
-                <p class="role">I answer the phone. I come out for most
-                  visits.</p>
-                <p>I taught myself to write software, and then spent twenty-five
-                  years doing it — building the online stores for Ralph Lauren,
-                  Restoration Hardware and Quiksilver, among others. Most of
-                  that job was making complicated things make sense to the
-                  people who had to use them.</p>
-                <p>I learned it all the hard way, with nobody to ask. So I know
-                  exactly what it feels like not to know — and I have never once
-                  thought a question was stupid.</p>
-                <p>I work inside a La Jolla senior community now. I'm the one
-                  who picks up when you call, and I'm the one who calls you
-                  back.</p>
-              </div>
-            </article>
+          <article class="person person--solo">
+            <div class="portrait">
+              <img src="lana.png" alt="Lana" width="800" height="600"
+                loading="lazy" decoding="async">
+            </div>
+            <div class="person-body">
+              <h3>Lana</h3>
+              <p class="role">I come to every visit.</p>
+              <p>Twenty-five years building websites and software — Ralph
+                Lauren, Restoration Hardware, Quiksilver. I taught myself all of
+                it.</p>
+              <p>These days most of the people I help are in their eighties and
+                nineties. That's how this started: the ringer that went silent,
+                the photos that vanished, the text that looked like the bank but
+                wasn't.</p>
+              <p>For the stubborn problems I bring my son, who does this for a
+                living. I'm there either way.</p>
+            </div>
+          </article>
 
-            <article class="person">
-              <div class="portrait" role="img"
-                aria-label="Photograph of Taylor">
-                <span>Taylor's photo here</span>
-              </div>
-              <div class="person-body">
-                <h3>Taylor</h3>
-                <p class="role">I come out for the harder visits.</p>
-              </div>
-            </article>
-          </div>
-
-          <p class="who-note">You'll always be told who's coming before they
-            arrive. If anyone ever turns up at your door claiming to be from
-            Tech Together and you weren't expecting them, <strong>don't let them
-              in — call us.</strong></p>
+          <p class="who-note"><strong>The same person, every time.</strong> I
+            come to every visit, so you're never handed off to someone new. And
+            if anyone ever turns up at your door claiming to be from Tech
+            Together and you weren't expecting them, <strong>don't let them in —
+              call me.</strong></p>
         </div>
       </section>
 
-      <!-- TESTIMONIALS -->
-      <section class="band" aria-labelledby="quotes-h">
-        <div class="wrap">
-          <p class="eyebrow">What people say</p>
-          <h2 id="quotes-h">In their words</h2>
-          <p class="lead-in">We'd rather show you three real ones than thirty
-            invented ones.</p>
+      <!-- ============================================================
+       TESTIMONIALS — HIDDEN UNTIL WE HAVE REAL ONES.
 
-          <div class="quotes">
-            <blockquote>
-              <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"
-                focusable="false"><path
-                  d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z" /></svg>
-              <p>[Real quote from your first client goes here. Ask them one
-                question: “What was it like before, and what's it like now?”
-                Their answer will be better than anything you could write.]</p>
-              <cite>First name, Last initial. · La Jolla</cite>
-            </blockquote>
+       To bring this back: delete this comment opener above and the
+       closer at the bottom of the block. Nothing else to change; the
+       CSS for .quotes and blockquote is still in the stylesheet.
 
-            <blockquote>
-              <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"
-                focusable="false"><path
-                  d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z" /></svg>
-              <p>[Try to get one from an adult child who lives out of state —
-                they're often the one searching, and their worry is different
-                from their parent's.]</p>
-              <cite>First name, Last initial. · Daughter of a client</cite>
-            </blockquote>
+       Ask each client one question: "What was it like before, and
+       what's it like now?" Their answer will beat anything written
+       for them. Three worth chasing:
+         1. A client  ......... first name + last initial, La Jolla
+         2. An adult child .... the out-of-state daughter
+         3. An activities director ... unlocks every other building
+       ============================================================ -->
+      <!--
+  <section class="band" aria-labelledby="quotes-h">
+    <div class="wrap">
+      <p class="eyebrow">What people say</p>
+      <h2 id="quotes-h">In their words</h2>
+      <p class="lead-in">We'd rather show you three real ones than thirty invented ones.</p>
 
-            <blockquote>
-              <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"
-                focusable="false"><path
-                  d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z" /></svg>
-              <p>[And one from an activities director, once you've run a Tech
-                Help Hour. That one unlocks every other building in town.]</p>
-              <cite>Name · Activities Director</cite>
-            </blockquote>
-          </div>
-        </div>
-      </section>
+      <div class="quotes">
+        <blockquote>
+          <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z"/></svg>
+          <p>[Real quote from your first client goes here. Ask them one question: “What was it like before, and what's it like now?” Their answer will be better than anything you could write.]</p>
+          <cite>First name, Last initial. · La Jolla</cite>
+        </blockquote>
+
+        <blockquote>
+          <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z"/></svg>
+          <p>[Try to get one from an adult child who lives out of state — they're often the one searching, and their worry is different from their parent's.]</p>
+          <cite>First name, Last initial. · Daughter of a client</cite>
+        </blockquote>
+
+        <blockquote>
+          <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9.5 5C6.5 6.5 5 9 5 12v7h6v-7H8c0-2 .8-3.5 2.5-4.5L9.5 5zm9 0C15.5 6.5 14 9 14 12v7h6v-7h-3c0-2 .8-3.5 2.5-4.5L18.5 5z"/></svg>
+          <p>[And one from an activities director, once you've run a Tech Help Hour. That one unlocks every other building in town.]</p>
+          <cite>Name · Activities Director</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  -->
 
       <!-- FAQ -->
       <section class="band band--sand" id="faq" aria-labelledby="faq-h">
@@ -1432,7 +1446,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <p>Yes, and it's a lot of what we do. We can arrange everything
                 with you, work with your parent in person, and send you a short
                 plain-English note afterward about what we did and what to watch
-                for.</p>
+                for. The same person comes to every visit, so your parent is
+                never handed off to a stranger.</p>
             </details>
             <details>
               <summary>Can you help me with MyChart or MyScripps?</summary>
