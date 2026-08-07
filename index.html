@@ -370,12 +370,39 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .sitenav a{
     display: block;
     white-space: nowrap;
-    padding: .9rem 1rem;
-    font-size: .95rem;
+    padding: .8rem .75rem;
+    font-size: .88rem;
     font-weight: 700;
     color: var(--cove);
     text-decoration: none;
     border-bottom: 4px solid transparent;
+  }
+  /* Above phone widths the row must never hide a link behind a scrollbar.
+     If seven items don't fit, they wrap onto a second line rather than
+     clipping Contact off the end. No overflow means no scrollbar. */
+  @media (min-width: 40em){
+    .sitenav ul{
+      flex-wrap: wrap;
+      overflow-x: visible;
+    }
+  }
+
+  /* On a phone the row does scroll sideways, because wrapping seven items
+     onto four lines would push the headline off the screen. Phones draw a
+     transient scrollbar, not the permanent grey bar a desktop draws, so the
+     only thing missing is a hint that there's more. This is that hint: a
+     soft fade at the right edge, which disappears once you reach the end. */
+  @media (max-width: 39.999em){
+    .sitenav{ position: relative; }
+    .sitenav ul{ scrollbar-width: none; -ms-overflow-style: none; }
+    .sitenav ul::-webkit-scrollbar{ display: none; }
+    .sitenav::after{
+      content:"";
+      position:absolute; top:0; right:0; bottom:0;
+      width: 2.5rem;
+      pointer-events:none;
+      background: linear-gradient(to right, rgba(255,255,255,0), #fff 75%);
+    }
   }
   .sitenav a:hover,
   .sitenav a:focus-visible{
