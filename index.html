@@ -849,21 +849,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: .7rem;
-      min-height: 4rem;
-      padding: 1rem 1.2rem calc(1rem + env(safe-area-inset-bottom, 0px));
+      gap: .6rem;
+      /* Height in px, label in rem. Comfortably past the 44px minimum tap
+         target without eating a fifth of a phone screen — and it grows only
+         as much as its own text needs when the size control is turned up. */
+      min-height: 58px;
+      padding: 12px 18px calc(12px + env(safe-area-inset-bottom, 0px));
       background-color: var(--rust);
       color: #fff;
       font-family: var(--font-body);
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 700;
       text-decoration: none;
       box-shadow: 0 -6px 20px -8px rgba(20,48,64,.4);
     }
     .callbar:hover, .callbar:active{ background-color: var(--rust-lift); color:#fff; }
-    .callbar svg{ width: 1.5rem; height: 1.5rem; fill: currentColor; flex: 0 0 auto; }
+    .callbar svg{ width: 1.3rem; height: 1.3rem; fill: currentColor; flex: 0 0 auto; }
 
-    body{ padding-bottom: 6rem; }
+    /* Clear the bar, plus the home indicator underneath it. */
+    body{ padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px)); }
   }
 
   footer{
