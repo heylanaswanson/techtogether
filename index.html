@@ -167,16 +167,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /* The type-size control rewrites this one value. It scales TEXT.
        Layout widths and vertical rhythm are set in px below, on purpose, so
        that turning the text up makes the words bigger without also inflating
-       the containers, the gaps and the whitespace. That coupling was the bug. */
-    font-size: 20px;
+       the containers, the gaps and the whitespace. That coupling was the bug.
+
+       18px, not the browser's 16px: still set for an older reader, but no
+       longer 25% above every other site on the web. Anyone who needs more has
+       the control in the hero, and now it remembers. */
+    font-size: 18px;
 
     /* Layout constants. Deliberately NOT rem. */
     --wrap-max:   1160px;   /* grids, cards, header */
     --narrow-max:  760px;   /* prose sections */
     --gutter: clamp(20px, 4vw, 32px);
   }
-  html[data-size="larger"]  { font-size: 23px; }
-  html[data-size="largest"] { font-size: 27px; }
+  html[data-size="larger"]  { font-size: 21px; }
+  html[data-size="largest"] { font-size: 24px; }
 
   *,*::before,*::after{ box-sizing:border-box; }
 
@@ -350,12 +354,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     content:"";
     position:absolute; inset:0;
     background-color: var(--cream);
+    /* Sea light coming in from the top right, well away from the left-aligned
+       headline. Peak tint is ~0.30 sky over cream, which leaves body text at
+       better than 11:1 — the wash can only ever lighten, never wash out. */
+    background-image:
+      radial-gradient(95% 72% at 88% -10%, rgba(169,210,228,.40), rgba(169,210,228,0) 64%),
+      radial-gradient(60% 50% at 4% 104%, rgba(239,192,80,.10), rgba(239,192,80,0) 70%);
     z-index:-3;
   }
 
   .sitenav{
-    background-color: #fff;
-    border-top: 2px solid var(--sand);
+    /* Sky is decoration-only per the palette rule, which is exactly what a
+       background is. The one thing it can't do is carry --cove text: that pair
+       is 5.8:1, AA but not AAA. Links drop to --cove-deep below, which is 7.9:1
+       on sky and keeps the nav at the same standard as the rest of the page. */
+    background-color: var(--sky);
   }
   .sitenav ul{
     display: flex;
@@ -373,13 +386,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     padding: .8rem .75rem;
     font-size: .88rem;
     font-weight: 700;
-    color: var(--cove);
+    color: var(--cove-deep);
     text-decoration: none;
     border-bottom: 4px solid transparent;
   }
   /* Above phone widths the row must never hide a link behind a scrollbar.
      If seven items don't fit, they wrap onto a second line rather than
      clipping Contact off the end. No overflow means no scrollbar. */
+  /* Requested: a much smaller nav from large-tablet width up. Left alone
+     below 61em so phones and small tablets keep the .88rem size for now.
+     61em is 976px — the threshold sits just under 990 so a 990px window gets
+     the compact row rather than falling back to the wrapped one. Tighter
+     padding here too: at 990 the container is 926px and this brings the row's
+     natural width to roughly 670px, so it has room to spare on one line. */
+  @media (min-width: 61em){
+    .sitenav a{
+      font-size: .72rem;
+      letter-spacing: .04em;
+      padding-inline: .7rem;
+    }
+    .sitenav ul{ gap: .2rem; }
+  }
+
   @media (min-width: 40em){
     .sitenav ul{
       flex-wrap: wrap;
@@ -390,7 +418,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
        width so each row runs flush edge to edge. A ragged tail on row one is
        what makes a wrapped nav look broken rather than deliberate. */
     .sitenav li{ flex: 1 1 auto; }
-    .sitenav li a{ text-align: center; }
+    .sitenav li a{ text-align: center; padding-block: .68rem; }
   }
 
   /* On a phone the row does scroll sideways, because wrapping seven items
@@ -407,14 +435,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       position:absolute; top:0; right:0; bottom:0;
       width: 2.5rem;
       pointer-events:none;
-      background: linear-gradient(to right, rgba(255,255,255,0), #fff 75%);
+      background: linear-gradient(to right, rgba(169,210,228,0), var(--sky) 75%);
     }
   }
   .sitenav a:hover,
   .sitenav a:focus-visible{
     color: var(--cove-deep);
     border-bottom-color: var(--rust);
-    background-color: var(--sky-pale);
+    background-color: #fff;
   }
   section[id]{ scroll-margin-top: 1.5rem; }
   html{ scroll-behavior: smooth; }
@@ -424,7 +452,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     position: relative;
     z-index: 3;
     background-color: #fff;
-    border-bottom: 2px solid var(--sand);
+    border-bottom: 2px solid var(--edge);
     box-shadow: 0 1px 0 rgba(255,255,255,.9);
   }
 
