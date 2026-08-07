@@ -48,7 +48,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     --on-dark:#FFFFFF; --on-dark-soft:#D6EAF3;
     --display:"Lora",Georgia,serif;
     --body:"Atkinson Hyperlegible",system-ui,-apple-system,sans-serif;
+
+    /* Text scale. The size control rewrites this, and only this. */
     font-size: 20px;
+
+    /* Layout constants. Deliberately NOT rem, so turning the text up makes the
+       words bigger without also stretching the column and the whitespace. */
+    --wrap-max: 760px;
+    --gutter: clamp(20px, 4vw, 32px);
   }
   html[data-size="larger"]{font-size:23px}
   html[data-size="largest"]{font-size:27px}
@@ -60,8 +67,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     background-color:var(--cream);
     color:var(--ink);
     min-height:100vh;
-    font-family:var(--body); font-size:1rem; line-height:1.7;
-    padding:2rem 0 5rem;      /* gutters live on .wrap, same as index.html */
+    font-family:var(--body); font-size:1rem; line-height:1.62;
+    padding:36px 0 88px;      /* gutters live on .wrap, same as index.html */
     position:relative;
   }
   /* A fixed cream layer covering the whole viewport, behind all content.
@@ -74,11 +81,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     background-color:var(--cream);
     z-index:-1;
   }
-  .wrap{ width:100%; max-width:42rem; padding-inline: clamp(1rem, 4vw, 1.5rem); margin-inline:auto; }
+  .wrap{ width:100%; max-width:var(--wrap-max); padding-inline: var(--gutter); margin-inline:auto; }
 
   h1,h2{font-family:var(--display);font-weight:600;color:var(--cove-deep);line-height:1.2;letter-spacing:-.012em;margin:0 0 .5em;text-wrap:balance}
-  h1{font-size:clamp(1.9rem,5.5vw,2.6rem)}
-  h2{font-size:clamp(1.5rem,4.4vw,2rem)}
+  h1{font-size:clamp(1.7rem,3.8vw,2.2rem)}
+  h2{font-size:clamp(1.4rem,3vw,1.8rem)}
   p{margin:0 0 1.1em;max-width:60ch}
 
   :focus-visible{outline:4px solid var(--cove-deep);outline-offset:3px;border-radius:6px}
@@ -92,7 +99,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   h2[tabindex="-1"]:focus-visible{ outline: none; }
 
   /* header */
-  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:40px}
   .logo{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--cove-deep);font-weight:700;font-size:1.25rem;letter-spacing:-.022em}
   .callout{font-weight:700;font-size:.95rem;color:var(--cove);text-decoration:none;border-bottom:3px solid var(--sky);padding-bottom:2px}
 
@@ -100,7 +107,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .prog{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cove);margin:0 0 .9rem}
 
   /* the option buttons — the whole interface, really */
-  .opts{display:grid;gap:.8rem;margin:1.8rem 0 0;padding:0;list-style:none}
+  .opts{display:grid;gap:14px;margin:28px 0 0;padding:0;list-style:none}
   .opt{
     display:flex;align-items:center;gap:1rem;width:100%;min-width:0;
     text-align:left; cursor:pointer;
@@ -123,7 +130,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* reassurance */
   .reassure{
     background-color:#fff; border:3px solid var(--sky); border-radius:16px;
-    padding:1.6rem 1.7rem; margin:1.5rem 0 0;
+    padding:26px 28px; margin:24px 0 0;
   }
   .reassure .hd{font-family:var(--display);font-size:1.35rem;font-weight:600;color:var(--cove-deep);margin:0 0 .6rem;line-height:1.25}
   .reassure p:last-child{margin-bottom:0}
@@ -134,7 +141,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* the safety interstitial */
   .alarm{
     background-color:var(--alarm-bg); border:3px solid var(--alarm-line); border-radius:16px;
-    padding:1.7rem;
+    padding:28px;
   }
   .alarm h2{color:var(--alarm);margin-top:0}
   .alarm ol{margin:1.2rem 0 0;padding-left:1.3rem}
@@ -157,11 +164,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .btn--quiet{background:transparent;color:var(--cove);border-color:var(--cove)}
   .btn--quiet:hover{background-color:var(--cove);color:#fff;border-color:var(--cove)}
 
-  .row{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:1.8rem;align-items:center}
+  .row{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:28px;align-items:center}
 
   /* the escape hatch — present on every single screen */
   .escape{
-    margin-top:2.2rem;padding-top:1.4rem;border-top:2px solid var(--sand);
+    margin-top:36px;padding-top:22px;border-top:2px solid var(--sand);
     font-size:.95rem;color:var(--cove);max-width:none;
   }
   .escape a{color:var(--cove);font-weight:700}
@@ -180,13 +187,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   textarea{resize:vertical}
 
   .summary{
-    background-color:var(--sky-pale);border-radius:12px;padding:1.1rem 1.3rem;margin-bottom:1.8rem;
+    background-color:var(--sky-pale);border-radius:12px;padding:18px 22px;margin-bottom:28px;
     font-size:.98rem;
   }
   .summary p{margin:0;max-width:none}
   .summary strong{color:var(--cove-deep)}
 
-  .done{background-color:var(--cove-deep);color:var(--on-dark);border-radius:16px;padding:2rem}
+  .done{background-color:var(--cove-deep);color:var(--on-dark);border-radius:16px;padding:32px}
   .done h2{color:#fff}
   .done p{color:var(--on-dark-soft)}
 
@@ -245,7 +252,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .callbar:hover,.callbar:active{ background-color:var(--rust-lift); color:#fff; }
     .callbar svg{ width:1.5rem; height:1.5rem; fill:currentColor; flex:0 0 auto; }
 
-    body{ padding-bottom: 6rem; }
+    body{ padding-bottom: 108px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -253,6 +260,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .btn:hover,.opt:hover{transform:none}
   }
 </style>
+    <script>
+  /* The reader sets their text size on the home page. Restore it here, before
+     first paint, so the choice survives the click through to this page. */
+  try{
+    var _s = window.localStorage.getItem('tt-text-size');
+    if(_s && _s !== 'normal') document.documentElement.setAttribute('data-size', _s);
+  }catch(e){}
+</script>
     <!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-LX3DMR62GC"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());    gtag('config', 'G-LX3DMR62GC'); </script>
   </head>
   <body>
