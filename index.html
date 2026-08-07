@@ -385,6 +385,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       flex-wrap: wrap;
       overflow-x: visible;
     }
+    /* When the row does wrap — an iPad in portrait can't hold seven of these
+       labels on one line at a readable size — the items share out the leftover
+       width so each row runs flush edge to edge. A ragged tail on row one is
+       what makes a wrapped nav look broken rather than deliberate. */
+    .sitenav li{ flex: 1 1 auto; }
+    .sitenav li a{ text-align: center; }
   }
 
   /* On a phone the row does scroll sideways, because wrapping seven items
