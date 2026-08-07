@@ -151,11 +151,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     --cove:       #1E4C62;
     --cove-deep:  #143646;
     --ink:        #14303D;
-    /* THE RULE, from the research on aging eyes:
-       the lens yellows, so HUE degrades but LUMINANCE survives. Warm hues survive
-       best of all. So: warm AND dark on light surfaces; warm AND light on dark ones.
-       Never a light warm colour on a light ground — that's the yellow/white pair the
-       literature names as one of the worst for older adults. */
     --rust:       #9C3E26;   /* buttons on cream. white label 6.7:1, and 6.2:1 against the page */
     --rust-deep:  #8F3821;   /* rust dark enough to be TEXT on cream — 7.1:1, AAA */
     --rust-lift:  #832F1C;   /* hover — goes darker, not lighter */
@@ -163,15 +158,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     --sun:        #EFC050;   /* the sun. ONLY on the dark band: 7.5:1 on cove-deep. */
     --gold:       #D9A64E;   /* focus rings on dark surfaces */
 
-    /* Text colors for use ON dark surfaces. All verified AAA (7:1+). */
     --on-dark:      #FFFFFF; /* 9.3:1 on cove, 12.8:1 on cove-deep */
     --on-dark-soft: #D6EAF3; /* 7.5:1 on cove, 10.3:1 on cove-deep */
 
     --font-display: "Lora", Georgia, serif;
     --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, sans-serif;
 
-    /* The type-size control rewrites this one value. */
+    /* The type-size control rewrites this one value. It scales TEXT.
+       Layout widths and vertical rhythm are set in px below, on purpose, so
+       that turning the text up makes the words bigger without also inflating
+       the containers, the gaps and the whitespace. That coupling was the bug. */
     font-size: 20px;
+
+    /* Layout constants. Deliberately NOT rem. */
+    --wrap-max:   1160px;   /* grids, cards, header */
+    --narrow-max:  760px;   /* prose sections */
+    --gutter: clamp(20px, 4vw, 32px);
   }
   html[data-size="larger"]  { font-size: 23px; }
   html[data-size="largest"] { font-size: 27px; }
@@ -180,8 +182,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   html{ background-color: var(--cream); }
 
-  /* A fixed cream layer covering the whole viewport, behind all content.
-     Belt and braces against any container that decides to go dark. */
   body::before{
     content:"";
     position:fixed;
@@ -198,7 +198,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     color: var(--ink);
     font-family: var(--font-body);
     font-size: 1rem;
-    line-height: 1.75;
+    line-height: 1.62;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -207,20 +207,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     font-weight: 600;
     color: var(--cove-deep);
     line-height: 1.18;
-    letter-spacing: -0.012em;   /* Lora is well-proportioned; it barely needs pulling in */
+    letter-spacing: -0.012em;
     margin: 0 0 .5em;
     text-wrap: balance;
   }
-  h1{ font-size: clamp(2.25rem, 6.2vw, 3.4rem); line-height: 1.12; }
-  h2{ font-size: clamp(1.75rem, 4.4vw, 2.4rem); }
+  h1{ font-size: clamp(2rem, 4.6vw, 2.8rem); line-height: 1.1; }
+  h2{ font-size: clamp(1.5rem, 3.2vw, 1.95rem); }
   h3{ font-size: 1.22rem; font-weight: 600; }
   p{ margin: 0 0 1.1em; max-width: 62ch; }
 
   a{ color: var(--cove); text-underline-offset: .25em; text-decoration-thickness: 2px; }
   a:hover{ color: var(--cove-deep); }
 
-  /* Focus ring: dark on light surfaces (11.8:1), gold on dark surfaces (5.8:1).
-     Never relies on a single color that could vanish. */
   :focus-visible{
     outline: 4px solid var(--cove-deep);
     outline-offset: 3px;
@@ -240,14 +238,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .wrap{
     width: 100%;
-    max-width: 68rem;
-    padding-inline: clamp(1rem, 4vw, 1.5rem);
+    max-width: var(--wrap-max);
+    padding-inline: var(--gutter);
     margin-inline: auto;
   }
   .narrow{
     width: 100%;
-    max-width: 46rem;
-    padding-inline: clamp(1rem, 4vw, 1.5rem);
+    max-width: var(--narrow-max);
+    padding-inline: var(--gutter);
     margin-inline: auto;
   }
 
@@ -271,8 +269,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     font-weight: 700;
     text-decoration: none;
     border-radius: 999px;
-    /* Warm and DARK. The button has to be findable as an OBJECT, not just legible
-       once you've found it. Rust is 6.2:1 against the cream page; the yellow was 1.6:1. */
     border: 3px solid var(--rust);
     background-color: var(--rust);
     color: #fff;
@@ -288,16 +284,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     position:relative;
     display:flex; flex-wrap:wrap; gap:1rem 1.5rem;
     align-items:center; justify-content:space-between;
-    padding-block: 1.4rem;
+    padding-block: 20px;
   }
   .logo{ flex: 1 1 auto; min-width: 0; }
   .phone-block{ flex: 0 1 auto; min-width: 0; }
   .logo{
     display:flex; align-items:center; gap:.7rem;
-    font-family: var(--font-body);     /* the wordmark is set in the same face as the body */
-    font-size: 1.3rem; font-weight: 700;
+    font-family: var(--font-body);
+    font-size: 1.2rem; font-weight: 700;
     color: var(--cove-deep); text-decoration:none;
-    letter-spacing: -.022em;           /* Atkinson runs wide; pull it in a touch */
+    letter-spacing: -.022em;
   }
   .logo:hover{ color: var(--cove); }
   .logo-words{ display:flex; flex-direction:column; line-height:1.1; }
@@ -346,7 +342,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .hero{
     position:relative;
     background-color: var(--cream);
-    padding-bottom: 4rem;
+    padding-bottom: 40px;
     overflow:hidden;
     isolation:isolate;
   }
@@ -387,15 +383,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     border-bottom-color: var(--rust);
     background-color: var(--sky-pale);
   }
-  /* Anchors would otherwise land with the heading tucked under the sticky top.
-     scroll-margin pushes the landing point down so the heading is actually visible. */
   section[id]{ scroll-margin-top: 1.5rem; }
   html{ scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
 
-  /* LAYOUT C — depth from an EDGE, not a fade.
-     A white band across the top, with a crisp boundary. It also finally gives
-     the nav somewhere to sit; before this it was floating in space. */
   .topbar{
     position: relative;
     z-index: 3;
@@ -408,28 +399,33 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     position:absolute;
     left:0; right:0; bottom:0;
     width:100%;
-    height: clamp(130px, 16vw, 230px);
+    height: clamp(100px, 11vw, 160px);
     z-index:-1;
     display:block;
   }
-  .hero-body{ padding-top: 3rem; padding-bottom: clamp(9rem, 18vw, 14rem); max-width: 40rem; }
-  .hero-body p.lede{
-    font-size: 1.2rem;
-    max-width: 34ch;
+  .hero-body{
+    padding-top: 44px;
+    padding-bottom: clamp(120px, 13vw, 180px);
+    max-width: 780px;
   }
-  .hero-actions{ display:flex; flex-wrap:wrap; gap: .9rem; margin-top: 1.6rem; }
-  .hero-actions .btn{ flex: 1 1 auto; min-width: 0; }
+  .hero-body p.lede{
+    font-size: 1.1rem;
+    max-width: 42ch;
+  }
+  .hero-actions{ display:flex; flex-wrap:wrap; gap: .9rem; margin-top: 28px; }
+  .hero-actions .btn{ flex: 0 1 auto; min-width: 0; }
+  @media (max-width: 30em){ .hero-actions .btn{ flex: 1 1 100%; } }
 
   /* ---------- Signature: the size control ---------- */
   .sizer{
-    margin-top: 2.6rem;
+    margin-top: 32px;
     width: 100%;
-    padding: 1.1rem 1.3rem;
+    padding: 14px 18px;
     background-color: #fff;
     border: 2px solid var(--sky);
     border-radius: 14px;
     display:flex; flex-wrap:wrap; align-items:center; gap:.7rem;
-    max-width: 34rem;
+    max-width: 460px;
   }
   .sizer-label{
     font-weight:700; margin:0 .4rem 0 0; max-width:none;
@@ -455,17 +451,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   /* ---------- Sections ---------- */
   .band{
-    padding-block: 4.5rem;
-    background-color: var(--cream);   /* was transparent — that was the bug */
+    padding-block: clamp(52px, 6vw, 78px);
+    background-color: var(--cream);
     color: var(--ink);
   }
   .band--sand{ background-color: var(--sand); }
   .band--cove{ background-color: var(--cove); color: var(--on-dark); }
 
-  /* ---- ON-DARK SAFETY NET ----
-     Every text element inside a dark surface gets an explicit light color.
-     Nothing is left to inherit, so nothing can fall back to --cove or --ink
-     and disappear into the background. This was the bug. */
   .band--cove,
   .band--cove p,
   .band--cove li,
@@ -498,8 +490,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .lead-in{ font-size:1.15rem; }
 
-  /* Symptom list — the customer's own words */
-  .symptoms{ list-style:none; padding:0; margin: 2rem 0 0; display:grid; gap:1rem; }
+  .symptoms{ list-style:none; padding:0; margin: 30px 0 0; display:grid; gap:14px; }
   .symptoms li{
     background: var(--cream);
     border-left: 6px solid var(--sky);
@@ -513,21 +504,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
 
   .cards{
-    display:grid; gap: 1.4rem; margin-top: 2.5rem;
+    display:grid; gap: 20px; margin-top: 36px;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
   }
   .card{
     background: var(--cream);
     border: 2px solid var(--edge);
     border-radius: 14px;
-    padding: 1.6rem;
+    padding: 24px;
   }
   .card h3{ margin-top:0; }
   .card ul{ margin:0; padding-left: 1.2rem; }
   .card li{ margin-bottom: .5rem; }
 
-  /* Steps — a real sequence, so numbers earn their place */
-  .steps{ list-style:none; counter-reset: step; padding:0; margin: 2.5rem 0 0; display:grid; gap: 2rem; }
+  .steps{ list-style:none; counter-reset: step; padding:0; margin: 36px 0 0; display:grid; gap: 28px; }
   .steps li{ display:flex; gap: 1.3rem; align-items:flex-start; }
   .steps li > div{ min-width: 0; }
   .steps li::before{
@@ -545,8 +535,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .steps h3{ margin-bottom:.2rem; }
   .steps p{ margin:0; }
 
-  /* Promises */
-  .promises{ list-style:none; padding:0; margin: 2rem 0 0; display:grid; gap:1rem; }
+  .promises{ list-style:none; padding:0; margin: 30px 0 0; display:grid; gap:14px; }
   .promises li{
     display:flex; gap:1rem; align-items:flex-start;
     font-size: 1.05rem;
@@ -556,11 +545,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     fill: var(--sun);
   }
 
-  /* Pricing */
-  .price-grid{ display:grid; gap:1.4rem; margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+  .price-grid{ display:grid; gap:20px; margin-top:36px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
   .price{
     background-color:#fff; border:2px solid var(--edge);
-    border-radius:14px; padding:1.7rem;
+    border-radius:14px; padding:26px;
   }
   .price--free{ border:3px solid var(--rust); }
   .price--free .unit{ color: var(--rust-deep); }
@@ -593,7 +581,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .band--cove .family-note strong{ color: var(--sun); }
 
-  /* Who we are */
   .people{
     display:grid; gap: 2rem; margin-top: 2.5rem;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
@@ -604,14 +591,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     border-radius: 16px;
     padding: 1.6rem;
   }
-  /* One person, so the card gets a photo beside the text rather than above it. */
   .person--solo{
-    margin-top: 2.5rem;
+    margin-top: 36px;
     display: grid;
-    gap: 1.8rem;
-    grid-template-columns: minmax(min(100%, 15rem), 20rem) 1fr;
+    gap: 28px;
+    grid-template-columns: minmax(min(100%, 240px), 320px) 1fr;
     align-items: start;
-    padding: 1.8rem;
+    padding: 26px;
   }
   .person--solo .portrait{ margin-bottom: 0; }
   @media (max-width: 44em){
@@ -629,11 +615,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .portrait img{
     width: 100%;
     height: 100%;
-    object-fit: cover;      /* fills the frame without squashing the face */
-    object-position: center top;   /* if it crops, crop from the bottom, not the head */
+    object-fit: cover;
+    object-position: center top;
     display: block;
   }
-  /* dashed styling only applies when it's still an empty placeholder */
   .portrait:not(:has(img)){
     border: 3px dashed var(--sky);
   }
@@ -662,7 +647,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .who-note strong{ color: var(--cove-deep); }
 
-  /* Testimonials */
   .quotes{ display:grid; gap:1.4rem; margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
   blockquote{
     margin:0;
@@ -683,8 +667,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .quote-mark{ width:2rem; height:2rem; fill: var(--sky); display:block; margin-bottom:.6rem; }
 
-  /* FAQ */
-  .faq{ margin-top: 2.5rem; }
+  .faq{ margin-top: 32px; }
   .faq details{
     border-top: 2px solid var(--sand);
     padding: .4rem 0;
@@ -711,18 +694,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .faq details[open] summary::after{ content:"–"; }
   .faq details p{ margin: 0 0 1.2rem; }
 
-  /* Contact */
   .contact-card{
     background: var(--cove-deep);
     border-radius: 18px;
-    padding: clamp(2rem, 5vw, 3.2rem);
+    padding: clamp(26px, 4vw, 46px);
     color: var(--on-dark);
   }
   .contact-actions{ display:flex; flex-wrap:wrap; gap:.9rem; justify-content:center; margin-top:1.8rem; }
   .contact-card .btn{ background-color: var(--sky); border-color: var(--sky); color: var(--cove-deep); }
   .contact-card .btn:hover{ background:#fff; border-color:#fff; color: var(--cove-deep); }
 
-  /* ---------- Contact form ---------- */
   .contact-card{ text-align: left; }
   .contact-card .contact-lede{ font-size: 1.1rem; }
   .contact-actions{ justify-content: flex-start; }
@@ -817,7 +798,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     line-height: 1.55;
   }
 
-  /* On the DARK card the polarity flips: warm and LIGHT. Navy on sun = 7.5:1. */
   .btn--send{
     background-color: var(--sun);
     border-color: var(--sun);
@@ -830,13 +810,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .form-note{ margin: 1.1rem 0 0; font-size:.9rem; color: var(--sky); max-width: 48ch; }
 
-  /* The phone number, pinned to the bottom of the screen on phones.
-     Rust, because it has to be the most findable object on the page. */
   .callbar{ display:none; }
 
   @media (max-width: 46em){
-    /* In the header it wrapped to two ugly lines and pushed the headline down.
-       So on a phone it leaves the header entirely and lives down here instead. */
     .phone-block{ display:none; }
 
     .callbar{
@@ -860,22 +836,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .callbar:hover, .callbar:active{ background-color: var(--rust-lift); color:#fff; }
     .callbar svg{ width: 1.5rem; height: 1.5rem; fill: currentColor; flex: 0 0 auto; }
 
-    /* keep the bar from sitting on top of the footer */
     body{ padding-bottom: 6rem; }
   }
 
   footer{
-    padding-block: 3rem;
+    padding-block: 48px;
     background-color: var(--cream);
     color: var(--ink);
     border-top: 2px solid var(--sand);
-    margin-top: 4.5rem;
+    margin-top: 72px;
     font-size: .95rem;
   }
   footer p{ max-width:none; }
   .foot-areas{ color: var(--cove-deep); }
 
-  /* This page is light by design. If the device is in dark mode, hold the line. */
   @media (prefers-color-scheme: dark){
     html, body, .band, .hero, footer{ background-color: var(--cream); color: var(--ink); }
     .band--sand{ background-color: var(--sand); }
@@ -885,15 +859,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .sizer{ background-color: #fff; }
   }
 
-  /* Respect an OS-level request for more contrast */
   @media (prefers-contrast: more){
-    /* Darkening the background alone made TEXT contrast worse. Darken both. */
     :root{
       --sky-pale:#E9F4F9;
       --on-dark-soft:#FFFFFF;
       --sand:#E4D6BE;
       --edge:#2F5F76;
-      --cove:#143646;      /* pull links/eyebrows down to match the darker ground */
+      --cove:#143646;
     }
     .card, .price, blockquote, .person{ border-color: var(--cove-deep); }
     a{ text-decoration-thickness: 3px; }
@@ -904,6 +876,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .btn:hover{ transform:none; }
   }
 </style>
+    <script>
+  /* Restore a previously chosen text size before first paint, so the page never
+     flashes at the wrong size and the choice survives a reload. */
+  try{
+    var _s = window.localStorage.getItem('tt-text-size');
+    if(_s && _s !== 'normal') document.documentElement.setAttribute('data-size', _s);
+  }catch(e){}
+</script>
     <!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-LX3DMR62GC"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());    gtag('config', 'G-LX3DMR62GC'); </script>
   </head>
 
@@ -1610,15 +1590,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     var buttons = Array.prototype.slice.call(document.querySelectorAll('.sizer-btn'));
     var names = { normal: 'Normal text size', larger: 'Larger text', largest: 'Largest text' };
 
+    function markPressed(size) {
+      buttons.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-size') === size));
+      });
+    }
+
+    /* The head script already applied the saved size. Sync the buttons to it so
+       the control doesn't claim "normal" while the page is set to largest. */
+    markPressed(root.getAttribute('data-size') || 'normal');
+
     buttons.forEach(function (btn) {
       btn.addEventListener('click', function () {
         var size = btn.getAttribute('data-size');
         if (size === 'normal') { root.removeAttribute('data-size'); }
         else { root.setAttribute('data-size', size); }
 
-        buttons.forEach(function (b) {
-          b.setAttribute('aria-pressed', String(b === btn));
-        });
+        markPressed(size);
+
+        /* Remember it. Someone who needs 27px text needs it on every page and
+           every visit — not once, until they navigate. */
+        try { window.localStorage.setItem('tt-text-size', size); } catch (e) {}
+
         status.textContent = names[size] + ' selected.';
       });
     });
