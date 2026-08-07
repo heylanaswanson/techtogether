@@ -876,6 +876,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .btn:hover{ transform:none; }
   }
 </style>
+    <script>
+  /* Restore a previously chosen text size before first paint, so the page never
+     flashes at the wrong size and the choice survives a reload. */
+  try{
+    var _s = window.localStorage.getItem('tt-text-size');
+    if(_s && _s !== 'normal') document.documentElement.setAttribute('data-size', _s);
+  }catch(e){}
+</script>
     <!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-LX3DMR62GC"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());    gtag('config', 'G-LX3DMR62GC'); </script>
   </head>
 
@@ -1582,15 +1590,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     var buttons = Array.prototype.slice.call(document.querySelectorAll('.sizer-btn'));
     var names = { normal: 'Normal text size', larger: 'Larger text', largest: 'Largest text' };
 
+    function markPressed(size) {
+      buttons.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-size') === size));
+      });
+    }
+
+    /* The head script already applied the saved size. Sync the buttons to it so
+       the control doesn't claim "normal" while the page is set to largest. */
+    markPressed(root.getAttribute('data-size') || 'normal');
+
     buttons.forEach(function (btn) {
       btn.addEventListener('click', function () {
         var size = btn.getAttribute('data-size');
         if (size === 'normal') { root.removeAttribute('data-size'); }
         else { root.setAttribute('data-size', size); }
 
-        buttons.forEach(function (b) {
-          b.setAttribute('aria-pressed', String(b === btn));
-        });
+        markPressed(size);
+
+        /* Remember it. Someone who needs 27px text needs it on every page and
+           every visit — not once, until they navigate. */
+        try { window.localStorage.setItem('tt-text-size', size); } catch (e) {}
+
         status.textContent = names[size] + ' selected.';
       });
     });
