@@ -33,7 +33,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta name="twitter:image"
       content="https://techtogethersd.com/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="theme-color" content="#FAF6EF">
+    <meta name="theme-color" content="#F7F0E3">
     <meta name="color-scheme" content="light">
 
     <link rel="icon" href="/favicon.ico" sizes="any">
@@ -58,7 +58,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   "url": "https://techtogethersd.com/",
   "telephone": "+1-858-727-9010",
   "email": "hello@techtogethersd.com",
-  "priceRange": "$100 per hour",
+  "priceRange": "$125 per hour",
   "areaServed": [
     { "@type": "Place", "name": "La Jolla, California" },
     { "@type": "Place", "name": "Pacific Beach, California" },
@@ -128,7 +128,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {
       "@type": "Question",
       "name": "How much does it cost?",
-      "acceptedAnswer": { "@type": "Answer", "text": "$100 for the first hour, then $50 for each additional half hour. Most visits are done in an hour. No travel fee inside La Jolla, and if we cannot help you, you do not pay. We take checks, Venmo or Zelle." }
+      "acceptedAnswer": { "@type": "Answer", "text": "$125 for the first hour, then $50 for each additional half hour. Most visits are done in an hour. No travel fee inside La Jolla, and if we cannot help you, you do not pay. We take checks, Venmo or Zelle." }
     },
     {
       "@type": "Question",
@@ -143,7 +143,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   :root{
     color-scheme: light;              /* stops iOS/Chrome auto dark-mode from inverting the page */
 
-    --cream:      #FAF6EF;
+    --cream:      #F7F0E3;
     --sand:       #EDE3D2;
     --edge:       #4E7E96;   /* borders. 4.1:1 on cream, 3.5:1 on sand — visible. */
     --sky:        #A9D2E4;   /* DECORATION ONLY — fills, rules, icons. Never body text on dark. */
@@ -172,15 +172,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
        18px, not the browser's 16px: still set for an older reader, but no
        longer 25% above every other site on the web. Anyone who needs more has
        the control in the hero, and now it remembers. */
-    font-size: 18px;
+    font-size: 16px;
 
     /* Layout constants. Deliberately NOT rem. */
     --wrap-max:   1160px;   /* grids, cards, header */
     --narrow-max:  760px;   /* prose sections */
     --gutter: clamp(20px, 4vw, 32px);
   }
-  html[data-size="larger"]  { font-size: 21px; }
-  html[data-size="largest"] { font-size: 24px; }
+  html[data-size="larger"]  { font-size: 19px; }
+  html[data-size="largest"] { font-size: 22px; }
 
   *,*::before,*::after{ box-sizing:border-box; }
 
@@ -215,8 +215,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     margin: 0 0 .5em;
     text-wrap: balance;
   }
-  h1{ font-size: clamp(2rem, 4.6vw, 2.8rem); line-height: 1.1; }
-  h2{ font-size: clamp(1.5rem, 3.2vw, 1.95rem); }
+  h1{ font-size: clamp(1.9rem, 2vw + 1rem, 2.5rem); line-height: 1.12; }
+  h2{ font-size: clamp(1.4rem, 1vw + 1.05rem, 1.8rem); }
   h3{ font-size: 1.22rem; font-weight: 600; }
   p{ margin: 0 0 1.1em; max-width: 62ch; }
 
@@ -286,9 +286,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* ---------- Header ---------- */
   .masthead{
     position:relative;
-    display:flex; flex-wrap:wrap; gap:1rem 1.5rem;
+    display:flex; flex-wrap:wrap; gap:.6rem 1.5rem;
     align-items:center; justify-content:space-between;
-    padding-block: 20px;
+    padding-block: 12px;
   }
   .logo{ flex: 1 1 auto; min-width: 0; }
   .phone-block{ flex: 0 1 auto; min-width: 0; }
@@ -310,7 +310,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     color: var(--cove);
     margin-top: .25rem;
   }
-  .phone-block{ text-align:right; }
+  .phone-block{ text-align:right; display:flex; align-items:center; }
   .phone-link{
     display:inline-block;
     font-weight:700; font-size:1.05rem;
@@ -388,6 +388,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     font-weight: 700;
     color: var(--cove-deep);
     text-decoration: none;
+    /* Equal transparent borders top and bottom so the reserved underline space
+       is balanced — the label centres in the band instead of riding high. */
+    border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
   }
   /* Above phone widths the row must never hide a link behind a scrollbar.
@@ -401,11 +404,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
      natural width to roughly 670px, so it has room to spare on one line. */
   @media (min-width: 61em){
     .sitenav a{
-      font-size: .72rem;
-      letter-spacing: .04em;
-      padding-inline: .7rem;
+      font-size: .9rem;
+      letter-spacing: .02em;
+      padding-inline: .85rem;
     }
-    .sitenav ul{ gap: .2rem; }
+    .sitenav ul{ gap: .25rem; }
   }
 
   @media (min-width: 40em){
@@ -451,9 +454,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .topbar{
     position: relative;
     z-index: 3;
-    background-color: #fff;
-    border-bottom: 2px solid var(--edge);
-    box-shadow: 0 1px 0 rgba(255,255,255,.9);
+    background-color: var(--cream);
+    border-bottom: 0;
   }
 
   .cove-art{
@@ -516,7 +518,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     background-color: var(--cream);
     color: var(--ink);
   }
-  .band--sand{ background-color: var(--sand); }
+  .band--sand{ background-color: #E6E2D8; }
   .band--cove{ background-color: var(--cove); color: var(--on-dark); }
 
   .band--cove,
@@ -569,10 +571,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
   }
   .card{
-    background: var(--cream);
-    border: 2px solid var(--edge);
-    border-radius: 14px;
-    padding: 24px;
+    background: #fff;
+    border: 1px solid rgba(20,48,64,.06);
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 1px 2px rgba(20,48,64,.04), 0 6px 16px -6px rgba(20,48,64,.14);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .card:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 2px 4px rgba(20,48,64,.06), 0 14px 30px -10px rgba(20,48,64,.22);
   }
   .card h3{ margin-top:0; }
   .card ul{ margin:0; padding-left: 1.2rem; }
@@ -608,10 +616,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .price-grid{ display:grid; gap:20px; margin-top:36px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
   .price{
-    background-color:#fff; border:2px solid var(--edge);
-    border-radius:14px; padding:26px;
+    background-color:#fff; border:1px solid rgba(20,48,64,.06);
+    border-radius:18px; padding:28px;
+    box-shadow: 0 1px 2px rgba(20,48,64,.04), 0 6px 16px -6px rgba(20,48,64,.14);
   }
-  .price--free{ border:3px solid var(--rust); }
+  .price--free{ border-top:4px solid var(--rust); }
   .price--free .unit{ color: var(--rust-deep); }
   .price .amount{
     font-family: var(--font-display);
@@ -647,10 +656,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
   }
   .person{
-    background-color: var(--cream);
-    border: 2px solid var(--edge);
-    border-radius: 16px;
-    padding: 1.6rem;
+    background-color: #fff;
+    border: 1px solid rgba(20,48,64,.06);
+    border-radius: 18px;
+    padding: 1.8rem;
+    box-shadow: 0 1px 2px rgba(20,48,64,.04), 0 6px 16px -6px rgba(20,48,64,.14);
   }
   .person--solo{
     margin-top: 36px;
@@ -711,10 +721,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .quotes{ display:grid; gap:1.4rem; margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
   blockquote{
     margin:0;
-    background: var(--cream);
-    border-radius:14px;
-    padding: 1.8rem;
-    border: 2px solid var(--edge);
+    background: #fff;
+    border-radius:18px;
+    padding: 1.9rem;
+    border: 1px solid rgba(20,48,64,.06);
+    box-shadow: 0 1px 2px rgba(20,48,64,.04), 0 6px 16px -6px rgba(20,48,64,.14);
   }
   blockquote p{
     font-family: var(--font-display);
@@ -730,10 +741,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .faq{ margin-top: 32px; }
   .faq details{
-    border-top: 2px solid var(--sand);
+    border-top: 2px solid rgba(20,48,64,.14);
     padding: .4rem 0;
   }
-  .faq details:last-of-type{ border-bottom: 2px solid var(--sand); }
+  .faq details:last-of-type{ border-bottom: 2px solid rgba(20,48,64,.14); }
   .faq summary{
     cursor:pointer;
     list-style:none;
@@ -829,16 +840,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .radios{ display:grid; gap:.6rem; }
   .radio{
-    display:flex; align-items:center; gap:.8rem;
+    display:flex; align-items:center; gap:.85rem;
     font-weight:400; font-size:1.02rem;
     margin:0; cursor:pointer;
-    padding:.55rem .9rem;
+    padding:.85rem 1.1rem;
     border:2px solid rgba(214,234,243,.55);
     border-radius:10px;
-    min-height:3rem;
+    min-height:3.2rem;
+    line-height:1.3;
   }
   .radio:hover{ border-color: var(--sky); }
-  .radio input{ width:1.4rem; height:1.4rem; accent-color: var(--sky); flex:0 0 auto; }
+  .radio input{
+    width:1.3rem; height:1.3rem;
+    margin:10px 0 0 10px;
+    flex:0 0 auto;
+    align-self:center;
+    accent-color: var(--sky);
+  }
+  .radio span{ line-height:1.3; }
   .radio:has(input:checked){ border-color: var(--sky); background: rgba(169,210,228,.12); }
 
   .contact-card .btn--outline{
@@ -917,7 +936,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   @media (prefers-color-scheme: dark){
     html, body, .band, .hero, footer{ background-color: var(--cream); color: var(--ink); }
-    .band--sand{ background-color: var(--sand); }
+    .band--sand{ background-color: #E6E2D8; }
     .band--cove{ background-color: var(--cove); color: var(--on-dark); }
     .contact-card{ background-color: var(--cove-deep); color: var(--on-dark); }
     .card, .price, blockquote, .symptoms li{ background-color: var(--cream); }
@@ -932,7 +951,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       --edge:#2F5F76;
       --cove:#143646;
     }
-    .card, .price, blockquote, .person{ border-color: var(--cove-deep); }
+    .card, .price, blockquote, .person{ border: 2px solid var(--cove-deep); }
     a{ text-decoration-thickness: 3px; }
   }
 
@@ -994,7 +1013,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="phone-block">
               <a class="phone-link" href="tel:+18587279010">Call (858)
                 727-9010</a>
-              <p class="phone-promise">Every call returned within a day.</p>
             </div>
           </nav>
         </div>
@@ -1265,7 +1283,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
           <div class="price-grid">
             <article class="price">
-              <span class="amount">$100</span>
+              <span class="amount">$125</span>
               <span class="unit">The first hour</span>
               <p>We sort out what's urgent, fix what we can, and leave you a
                 written note — in large print — of what we did.</p>
@@ -1481,7 +1499,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </details>
             <details>
               <summary>How much does it cost?</summary>
-              <p>$100 for the first hour, then $50 for each additional half hour
+              <p>$125 for the first hour, then $50 for each additional half hour
                 if you want to keep going. Most visits are done in an hour. No
                 travel fee anywhere in La Jolla, and if we can't help you, you
                 don't pay.</p>
