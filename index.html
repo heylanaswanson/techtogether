@@ -85,7 +85,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }],
   "image": "https://techtogethersd.com/og-image.png",
   "logo": "https://techtogethersd.com/logo-512-cream.png",
-  "knowsAbout": ["iPhone help", "iPad help", "senior technology training", "online scam prevention", "email setup", "photo organization", "printer setup", "MyChart help", "MyScripps", "MyUCSDChart", "patient portal help", "Zoom telehealth setup", "video doctor visits"]
+  "knowsAbout": ["iPhone help", "Android to iPhone switching", "iPad help", "senior technology training", "online scam prevention", "email setup", "photo organization", "printer setup", "MyChart help", "MyScripps", "MyUCSDChart", "patient portal help", "Zoom telehealth setup", "video doctor visits"]
 }
 </script>
 
@@ -127,7 +127,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {
       "@type": "Question",
       "name": "How much does it cost?",
-      "acceptedAnswer": { "@type": "Answer", "text": "$125 for the first hour, then $50 for each additional half hour. Most visits are done in an hour. No travel fee inside La Jolla, and if we cannot help you, you do not pay. We take checks, Venmo or Zelle." }
+      "acceptedAnswer": { "@type": "Answer", "text": "$125 for the first hour, then $50 for each additional half hour. Most visits are done in an hour. No travel fee inside La Jolla. We take checks, Venmo or Zelle." }
     },
     {
       "@type": "Question",
@@ -885,6 +885,36 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     line-height: 1.55;
   }
 
+  .radios--wrap{ display:flex; flex-wrap:wrap; }
+  .radio--length{ align-items:center; }
+  .radio--length .radio-main{ flex:1; min-width:0; }
+  .radio--length .radio-main strong{ display:inline-block; font-size:1.05rem; }
+  .radio--length .radio-main small{ display:block; font-size:.92rem; line-height:1.4; color: var(--on-dark-soft); }
+  .radio--length .radio-price{ font-weight:700; font-size:1.15rem; }
+  .contact-card .radio-badge{
+    display:inline-block; margin-left:.6rem;
+    font-size:.78rem; font-weight:700; line-height:1.3;
+    padding:.12rem .65rem; border-radius:999px;
+    background: var(--sun); color: var(--cove-deep);
+  }
+
+  /* The general ".form label" rule outranks plain ".radio", which flattened
+     the tick boxes and flipped the layout. These match its specificity. */
+  .form label.radio{
+    display:flex; align-items:center; gap:.85rem;
+    font-weight:400; font-size:1.02rem; line-height:1.3;
+    margin:0; padding:.85rem 1.1rem; min-height:3.2rem;
+    cursor:pointer;
+  }
+  .form label.radio input{
+    flex:0 0 auto; align-self:center;
+    width:1.4rem; height:1.4rem; margin:0;
+  }
+  .form label.radio--length .radio-main{ flex:1 1 auto; min-width:0; display:block; }
+  .form label.radio--length .radio-main strong{ font-weight:700; }
+  .form label.radio--length .radio-main small{ font-weight:400; }
+  .form label.radio--length .radio-price{ flex:0 0 auto; margin-left:auto; }
+
   .btn--send{
     background-color: var(--sun);
     border-color: var(--sun);
@@ -1124,6 +1154,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <li>Voicemail that actually works</li>
                 <li>Silencing the spam callers</li>
                 <li>FaceTime with the grandchildren, start to finish</li>
+                <li>Switching from Android to iPhone, with your photos, contacts
+                  and messages moved over</li>
               </ul>
             </article>
 
@@ -1213,8 +1245,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <div>
                 <h3>You call or write to us</h3>
                 <p>Tell us what's going on, in whatever words you have for it.
-                  “The thing won't work” is a perfectly good description. We'll
-                  figure out the rest together.</p>
+                  We'll figure out the rest together.</p>
               </div>
             </li>
             <li>
@@ -1273,8 +1304,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
                 focusable="false"><path
                   d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" /></svg>
-              <span>You'll know the price before we start. If we can't help you,
-                you don't pay.</span>
+              <span>You'll know the price before we start.</span>
             </li>
             <li>
               <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"
@@ -1317,11 +1347,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </div>
 
           <p class="price-note">You'll know the price before we knock on the
-            door. <strong>If we can't help you, you don't pay.</strong> We take
+            door. We take
             checks, or Venmo and Zelle if that's easier for your family.</p>
 
-          <p class="price-note"><strong>Visiting Pacific Beach, University
-              City or Del Mar?</strong> We do. Choose either a two-hour minimum
+          <p class="price-note"><strong>Live in Pacific Beach, University City
+              or Del Mar?</strong> We'll come to you. Choose either a two-hour
+            minimum
             visit, or add a $25 travel surcharge to a one-hour visit. Further
             out
             than that? Call and we'll tell you the exact amount before you
@@ -1520,8 +1551,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <summary>How much does it cost?</summary>
               <p>$125 for the first hour, then $50 for each additional half hour
                 if you want to keep going. Most visits are done in an hour. No
-                travel fee anywhere in La Jolla, and if we can't help you, you
-                don't pay.</p>
+                travel fee anywhere in La Jolla.</p>
             </details>
             <details>
               <summary>Can you help my parent while I live out of
@@ -1564,7 +1594,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <details>
               <summary>What areas do you serve?</summary>
               <p>La Jolla, including Bird Rock, at our regular rates. We also
-                visit Pacific Beach, University City and Del Mar: there it's
+                come to Pacific Beach, University City and Del Mar: there it's
                 either a two-hour minimum visit or a $25 travel surcharge on a
                 one-hour visit. Further out, a travel fee applies. Call and
                 we'll tell you the exact amount before you book.</p>
@@ -1642,9 +1672,78 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               </fieldset>
 
               <div class="field">
+                <label for="f-address">Where should we come?</label>
+                <p class="hint" id="addr-hint">Street address and city. In
+                  Pacific Beach, University City or Del Mar, a two-hour minimum
+                  or a $25 travel surcharge applies. Further out, a travel fee
+                  applies. We'll confirm any charge with you before the
+                  visit.</p>
+                <input id="f-address" name="address" type="text"
+                  autocomplete="street-address" aria-describedby="addr-hint">
+              </div>
+
+              <fieldset class="field">
+                <legend>Which devices would you like help with? <span
+                    class="optional">(choose all that apply)</span></legend>
+                <div class="radios radios--wrap">
+                  <label class="radio"><input type="checkbox" name="devices"
+                      value="iPhone"><span>iPhone</span></label>
+                  <label class="radio"><input type="checkbox" name="devices"
+                      value="iPad"><span>iPad</span></label>
+                  <label class="radio"><input type="checkbox" name="devices"
+                      value="Mac computer"><span>Mac computer</span></label>
+                  <label class="radio"><input type="checkbox" name="devices"
+                      value="Windows computer"><span>Windows
+                      computer</span></label>
+                  <label class="radio"><input type="checkbox" name="devices"
+                      value="Android phone or tablet"><span>Android phone or
+                      tablet</span></label>
+                  <label class="radio"><input type="checkbox" name="devices"
+                      value="Not sure"><span>Not sure</span></label>
+                </div>
+              </fieldset>
+
+              <fieldset class="field">
+                <legend>How long would you like?</legend>
+                <p class="hint">There's usually plenty to cover. If you're not
+                  sure, choose 1½ hours. Prices shown are for La Jolla.</p>
+                <div class="radios">
+                  <label class="radio radio--length"><input type="radio"
+                      name="length" value="1 hour ($125)"><span
+                      class="radio-main"><strong>1 hour</strong><small>Good for
+                        one or two quick questions</small></span><span
+                      class="radio-price">$125</span></label>
+                  <label class="radio radio--length"><input type="radio"
+                      name="length" value="1½ hours ($175)" checked><span
+                      class="radio-main"><strong>1½ hours</strong><span
+                        class="radio-badge">Recommended for a first
+                        visit</span><small>Time to set things up and practice
+                        together</small></span><span
+                      class="radio-price">$175</span></label>
+                  <label class="radio radio--length"><input type="radio"
+                      name="length" value="2 hours ($225)"><span
+                      class="radio-main"><strong>2 hours</strong><small>For a
+                        new phone or several things at once</small></span><span
+                      class="radio-price">$225</span></label>
+                </div>
+              </fieldset>
+
+              <div class="field">
+                <label for="f-when">Which mornings work for you? <span
+                    class="optional">(optional)</span></label>
+                <p class="hint" id="when-hint">Visits are in the morning. Tell
+                  us
+                  a day or two that suit you, and we'll confirm a time with
+                  you.</p>
+                <input id="f-when" name="mornings" type="text"
+                  placeholder="For example: Thursday or Friday"
+                  aria-describedby="when-hint">
+              </div>
+
+              <div class="field">
                 <label for="f-message">What's going on?</label>
                 <p class="hint" id="msg-hint">Describe it however makes sense to
-                  you. “The thing won't work” is a perfectly good start.</p>
+                  you.</p>
                 <textarea id="f-message" name="message" rows="5"
                   aria-describedby="msg-hint" required></textarea>
               </div>
